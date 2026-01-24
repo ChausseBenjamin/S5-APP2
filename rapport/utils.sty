@@ -1,0 +1,8 @@
+\ProvidesPackage{utils}
+\RequirePackage{amsmath}
+\RequirePackage{tabularx}
+
+\newenvironment{definitions}[1][Where:]
+  {#1 \par\vspace{\abovedisplayskip}\noindent
+   \tabularx{\columnwidth}{>{$}l<{$} @{${}\colon{}$} >{\raggedright\arraybackslash}X}}
+  {\endtabularx\par\vspace{\belowdisplayskip}}

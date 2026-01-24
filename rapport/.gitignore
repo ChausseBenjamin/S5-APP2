@@ -1,0 +1,8 @@
+00-main.pdf
+
+*.aux
+*.bcf
+*.gz
+*.log
+*.toc
+*.xml

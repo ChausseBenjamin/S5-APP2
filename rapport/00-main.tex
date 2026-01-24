@@ -1,0 +1,55 @@
+\documentclass[a4paper]{article} \usepackage{tabularx}
+\usepackage{titlepage}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{document}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{utils}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}       % customizable list environments
+\usepackage[toc,page]{appendix}
+
+
+
+\title{Rapport d'APP}
+
+\class{Éléments de statique et dynamique}
+\classnb{GEN441}
+
+\teacher{Berthié Gouin-Ferland \& Jean-Philippe Gouin}
+
+\newcommand{\todo}[1]{\begin{color}{Red}\textbf{TODO:} #1\end{color}}
+\newcommand{\note}[1]{\begin{color}{Orange}\textbf{NOTE:} #1\end{color}}
+\newcommand{\fixme}[1]{\begin{color}{Fuchsia}\textbf{FIXME:} #1\end{color}}
+\newcommand{\question}[1]{\begin{color}{ForestGreen}\textbf{QUESTION:} #1\end{color}}
+
+\author{
+  \addtolength{\tabcolsep}{-0.4em}
+  \begin{tabular}{rcl}
+      Benjamin Chausse & -- & CHAB1704 \\
+      Shawn Couture    & -- & COUS1912 \\
+  \end{tabular}
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Conception de la glissade et de la valve}
+\input{01-glissade-valve.tex}
+
+\section{Conception de la durée de la minuterie d’ouverture de la trappe}
+\input{02-minuterie.tex}
+
+\section{Conception du coussin-trampoline}
+\input{03-trampoline.tex}
+
+\section{Conception du bassin d’eau}
+\input{04-bassin.tex}
+
+\end{document}
