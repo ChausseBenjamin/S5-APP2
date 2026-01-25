@@ -23,7 +23,7 @@ first_points = [
 
 % Data for the last point of the trajectory
 E_x = 25; % m
-E_range = linspace(10,15,6) % can increase precision later
+E_range = linspace(10,15,6); % can increase precision later
 
 valve_data = [
 % percent, friction coefficient
@@ -39,4 +39,3 @@ valve_data = [
   90,      0.48;
   100,     0.46;
 ];
-
