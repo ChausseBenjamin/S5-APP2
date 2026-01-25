@@ -1,0 +1,42 @@
+clc
+clear all
+close all
+
+% participant mass
+m   = 80; % kg
+
+% hydrodynamic coefficient
+b   = 47; % kg/m
+
+% flotability constant (slightly negative)
+k_f = 0.95;
+
+
+% Only the first four since we need to figure out the last
+first_points = [
+% x: m  y: m
+	0,    30; % A
+	8,    19; % B
+	15,   20; % C
+	20,   16; % D
+];
+
+% Data for the last point of the trajectory
+E_x = 25; % m
+E_range = linspace(10,15,6) % can increase precision later
+
+valve_data = [
+% percent, friction coefficient
+  00,      0.87;
+  10,      0.78;
+  20,      0.71;
+  30,      0.61;
+  40,      0.62;
+  50,      0.51;
+  60,      0.51;
+  70,      0.49;
+  80,      0.46;
+  90,      0.48;
+  100,     0.46;
+];
+
