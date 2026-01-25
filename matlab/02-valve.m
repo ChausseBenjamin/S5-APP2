@@ -15,7 +15,7 @@ x_fit = linspace(min(x), max(x), 100);   % 100 points between min and max of x
 y_fit = v(1) + v(2)*x_fit + v(3)*x_fit.^2;    % evaluate quadratic
 
 % Predicted values from fitted quadratic
-y_fit_points = v(1) + v(2)*x + v(3\*x.^2;
+y_fit_points = v(1) + v(2)*x + v(3)*x.^2;
 
 % Residual sum of squares
 SS_res = sum((y - y_fit_points).^2);
@@ -30,10 +30,19 @@ R2 = 1 - SS_res / SS_tot;
 figure;
 hold on;
 grid on;
+% Set tick labels to use LaTeX interpreter for Computer Modern
+set(gca, 'TickLabelInterpreter', 'latex');
 
-title('Valve Friction vs Opening');
-xlabel('Valve Opening (%)');
-ylabel('Friction Coefficient');
+title('Friction selon l''ouverture de la valve',
+  'Interpreter', 'latex',
+	'FontSize', 17);
+xlabel('Overture de la valve ($\%$)',
+  'Interpreter', 'latex',
+	'FontSize', 15);
+ylabel('Coefficient de frottement $\mu_f$',
+  'Interpreter', 'latex',
+	'FontSize', 15);
+
 
 % Data points:
 plot(valve_pcnt, valve_friction, 'o',
@@ -45,10 +54,17 @@ plot(x_fit, y_fit, '-',
   'Color', '#b7416e',
 	'LineWidth', 2);
 
-% Add R^2 to top-right
-text(0.95, 0.95, sprintf('R^2 = %.4f', R2), ...
+% Add legend in top-right
+legend('Données expérimentales', 'Approximation quadratique', ...
+    'Interpreter', 'latex', ...
+    'Location', 'northeast', ...
+    'FontSize', 12);
+
+% Add R^2 below the legend in top-right
+text(0.95, 0.75, sprintf('$F(x)= %.4f %.4f x + %.4f x^{2}$\n$R^2 = %.4f$',
+v(1), v(2), v(3), R2), ...
     'Units', 'normalized', ...   % use axes-relative coordinates
     'HorizontalAlignment', 'right', ...
     'VerticalAlignment', 'top', ...
     'FontSize', 12, ...
-    'FontWeight', 'bold');
+    'Interpreter', 'latex');
