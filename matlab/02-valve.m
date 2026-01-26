@@ -30,41 +30,33 @@ R2 = 1 - SS_res / SS_tot;
 figure;
 hold on;
 grid on;
-% Set tick labels to use LaTeX interpreter for Computer Modern
-set(gca, 'TickLabelInterpreter', 'latex');
 
-title('Friction selon l''ouverture de la valve',
-  'Interpreter', 'latex',
-	'FontSize', 17);
-xlabel('Overture de la valve ($\%$)',
-  'Interpreter', 'latex',
-	'FontSize', 15);
-ylabel('Coefficient de frottement $\mu_f$',
-  'Interpreter', 'latex',
-	'FontSize', 15);
+title('Friction selon l''ouverture de la valve', 'FontSize', 17);
+xlabel('Ouverture de la valve (%)', 'FontSize', 15);
+ylabel('Coefficient de frottement μf', 'FontSize', 15);
 
-
-% Data points:
+% Data points with specified color
 plot(valve_pcnt, valve_friction, 'o',
-  'LineWidth', 1.5,
-  'Color', '#66aabb');
+  'LineWidth', 2,
+  'Color', palette{8},
+  'MarkerSize', 3);
 
-% Fitted Curve:
+% Fitted Curve with specified color
 plot(x_fit, y_fit, '-',
-  'Color', '#b7416e',
+  'Color', palette{2},
 	'LineWidth', 2);
 
-% Add legend in top-right
-legend('Données expérimentales', 'Approximation quadratique', ...
-    'Interpreter', 'latex', ...
-    'Location', 'northeast', ...
-    'FontSize', 12);
+% Add legend (defaults to northeast automatically)
+legend('Données expérimentales', 'Approximation quadratique');
 
-% Add R^2 below the legend in top-right
-text(0.95, 0.75, sprintf('$F(x)= %.4f %.4f x + %.4f x^{2}$\n$R^2 = %.4f$',
-v(1), v(2), v(3), R2), ...
-    'Units', 'normalized', ...   % use axes-relative coordinates
-    'HorizontalAlignment', 'right', ...
-    'VerticalAlignment', 'top', ...
-    'FontSize', 12, ...
-    'Interpreter', 'latex');
+% Add function equation with Unicode symbols (units now default to normalized)
+text(0.95, 0.85, sprintf('F(x) = %.4f + %.4fx + %.4fx²', v(1), v(2), v(3)), ...
+    'HorizontalAlignment', 'right');
+
+text(0.95, 0.75, sprintf('R² = %.4f', R2), ...
+    'HorizontalAlignment', 'right');
+
+axis tight;
+
+% Save using the new save_plot function
+save_plot(gcf, '02-valve');
