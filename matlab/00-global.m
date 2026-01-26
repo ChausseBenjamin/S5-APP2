@@ -10,8 +10,14 @@ run('99-utils.m');
 gravity               = 9.81; % m/s^2
 
 participantMass       = 80;   % kg
-ballMass              = 8;    % Kg
 
+% Ball values
+ballMass   = 8;    % Kg
+ballSpeed  = -1;     % m/s
+
+% Trapdoor values
+trapDoorLength       = 3;      % meters
+trapDoorTimeSecurity = 0.02;   % seconds. Marge de s¨¦curit¨¦ donn¨¦e
 
 %% Trajectory Data
 
