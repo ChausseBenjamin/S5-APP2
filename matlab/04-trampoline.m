@@ -10,19 +10,19 @@ initialSpeed  = trampInitialVertSpeed;
 initialHeight = trampInitialHeight;
 totalMass     = participantMass + ballMass;
 
-% - Énergie du participant
-% - - Toute l'énergie potentiel à 5 mètre devient cinétique en touchant le coussin.
-% - - Si on à une énergie cinétique initial, alors elle est simplement additionnée.
+% - energie du participant
+% - - Toute l'energie potentiel a 5 metre devient cinetique en touchant le coussin.
+% - - Si on a une energie cinetique initial, alors elle est simplement additionnee.
 
-% - - Énergie cinétique initial
+% - - energie cinetique initial
 initialKineticEnergy = 0.5 * totalMass * (initialSpeed^2);
-% - - Énergie potentielle à 5 mètres
+% - - energie potentielle a 5 metres
 potentialEnergyAtDistance = totalMass * gravity * initialHeight;
-% - - Énergie mécanique à l'impact avec le coussin. Em = Ep + Ec
+% - - energie mecanique a l'impact avec le coussin. Em = Ep + Ec
 participantEnergyAtImpact = initialKineticEnergy + potentialEnergyAtDistance;
 
-% - Distance de déformation / équilibre
-% - - Énergie du participant = énergie du ressort
+% - Distance de deformation / equilibre
+% - - energie du participant = energie du ressort
 distance = sqrt(participantEnergyAtImpact / (0.5 * springCoefficient));
 
 % - Displays
