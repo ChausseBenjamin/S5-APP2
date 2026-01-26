@@ -55,9 +55,9 @@ valve_dataset = [
 
 %% Trampoline values
 
-springCoefficient     = 6000; % N/m
-trampInitialHeight    = 5;    % m
-trampInitialVertSpeed = 0;    % m
+springCoefficient  = 6000; % N/m
+trampFallHeight   = 5;    % m hauteur du participant avant de tomber sur la trampoline.
+trampSafetyMargin = 0.5;  % 50 cm need to be added to the total of the trampoline height.
 
 
 %% Bassin values
