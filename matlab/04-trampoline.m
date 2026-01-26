@@ -7,7 +7,7 @@ close all;
 run('00-global.m');
 
 initialSpeed  = trampInitialVertSpeed;
-initialHeight = trampolineInitialHeight;
+initialHeight = trampInitialHeight;
 totalMass     = participantMass + ballMass;
 
 % - Énergie du participant
