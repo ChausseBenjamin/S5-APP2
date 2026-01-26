@@ -12,7 +12,7 @@ x_base = first_points(:,1);
 y_base = first_points(:,2);
 
 % Memory pre-allocations
-x_plot = linspace(min(x_base), E_x, 251);             % x-axis resolution
+x_plot = linspace(min(x_base), E_x, 26);             % x-axis resolution
 trajectories = zeros(length(x_plot), numel(E_range)); % Position data
 slopes = zeros(length(x_plot), numel(E_range));       % Derivative data
 angles = zeros(length(x_plot), numel(E_range));       % Angles in degrees
@@ -20,10 +20,10 @@ friction = zeros(length(x_plot), numel(E_range));     %
 
 % Generate a unique position and slope curve for each
 % possible E height
-for E = 1:numel(E_range)
+for k = 1:numel(E_range)
     % Construct full point set
     x = [x_base; E_x];
-    y = [y_base; E_range(E)];
+    y = [y_base; E_range(k)];
 
     % Polynomial through all points (degree = N-1)
     p = polyfit(x, y, numel(x)-1);
@@ -35,16 +35,16 @@ for E = 1:numel(E_range)
 		angle      = atan(derivative);
 
     % Store data
-    trajectories(:, E) = height;
-    slopes(:, E)       = derivative;
-    angles(:, E)       = angle;
+    trajectories(:, k) = height;
+    slopes(:, k)       = derivative;
+    angles(:, k)       = angle;
 
     % Shape
     figure(1);
-    color_idx = mod(E-1, length(palette)) + 1;  % Cycle through colors
+    color_idx = mod(k-1, length(palette)) + 1;  % Cycle through colors
     plot(x_plot, height, 'LineWidth', 1.2, 'Color', palette{color_idx});
 	  % Slope
-    plot([E_x], [E_range(E)], 'o',
+    plot([E_x], [E_range(k)], 'o',
 	  'LineWidth', 2,
 		'Color', palette{color_idx},
 		'MarkerSize', 3);

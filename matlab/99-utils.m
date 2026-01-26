@@ -49,3 +49,7 @@ function save_plot(fig_handle, filename, square_size)
 
     fprintf('PDF saved: %s.pdf (%.1fx%.1f inches, CMU Serif, colored plots)\n', base_path, square_size, square_size);
 end
+
+function result = kph2mps(s)
+	result = s/3.6
+end
