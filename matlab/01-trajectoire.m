@@ -7,6 +7,7 @@ run("00-global.m");
 figure(1); clf; hold on; axis tight;
 figure(2); clf; hold on; axis tight;
 figure(3); clf; hold on; axis tight;
+figure(4); clf; hold on; axis tight;
 
 x_base = first_points(:,1);
 y_base = first_points(:,2);
@@ -41,6 +42,9 @@ for k = 1:numel(E_range)
     slopes(:, k)       = derivative;
     angles(:, k)       = angle;
 
+    % Calculate friction force: cos(angle)*x
+    friction(:, k) = cos(angle');
+
     % Derivative polynomial
 
     % Shape
@@ -62,6 +66,12 @@ for k = 1:numel(E_range)
 		% Angle
 		figure(3);
     plot(x_plot, angle,
+		  'LineWidth', 1.2,
+			'Color', palette{color_idx});
+
+		% Friction
+		figure(4);
+    plot(x_plot, friction(:, k),
 		  'LineWidth', 1.2,
 			'Color', palette{color_idx});
 end
@@ -89,3 +99,11 @@ grid on;
 xlabel('x (m)');
 ylabel('slope (°)');
 title('Slope Angle');
+save_plot(gcf, '01-angles');
+
+figure(4);
+grid on;
+xlabel('x (m)');
+ylabel('cos(θ)×x');
+title('Friction Force: cos(angle)×x');
+save_plot(gcf, '01-friction');
