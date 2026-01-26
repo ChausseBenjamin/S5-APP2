@@ -42,7 +42,7 @@ first_points = [
 
 % Last point of the trajectory (with multiple possibly y values)
 E_x     = 25;                % m
-E_range = linspace(10,15,6); % m
+E_range = linspace(10,15,12); % m
 
 
 %% Valve values
