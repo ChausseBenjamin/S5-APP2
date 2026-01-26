@@ -2,46 +2,20 @@ clc
 clear all
 close all
 
-% Use gnuplot toolkit globally
-graphics_toolkit('gnuplot');
-
-% Set global font defaults for all plots
-set(0, 'DefaultAxesFontName', 'CMU Serif');
-set(0, 'DefaultTextFontName', 'CMU Serif');
-set(0, 'DefaultAxesFontSize', 12);
-set(0, 'DefaultTextFontSize', 12);
-
-% Set global default properties to minimize repetitive settings
-set(0, 'DefaultTextUnits', 'normalized');  % So text positioning uses 0-1 coordinates
-
-% Figures root path
-global figures_path;
-figures_path = '../rapport/figures/';
-if ~exist(figures_path, 'dir')
-    mkdir(figures_path);
-end
-
-palette = {
-	"#66aabb", ...
-	"#b74163", ...
-	"#254e70", ...
-	"#7c66b7", ...
-	"#cc7e00", ...
-	"#436436", ...
-	"#059a94", ...
-};
-
-% participant mass
-m   = 80; % kg
-
-% hydrodynamic coefficient
-b   = 47; % kg/m
-
-% flotability constant (slightly negative)
-k_f = 0.95;
+%% UI Setup (defaults and shit)
+run('99-utils.m');
 
 
-% Only the first four since we need to figure out the last
+%% Global values
+gravity               = 9.81; % m/s^2
+
+participantMass       = 80;   % kg
+ballMass              = 8;    % Kg
+
+
+%% Trajectory Data
+
+% Only the first 4 since we need to figure out the last
 first_points = [
 % x: m  y: m
 	0,    30; % A
@@ -50,11 +24,14 @@ first_points = [
 	20,   16; % D
 ];
 
-% Data for the last point of the trajectory
-E_x = 25; % m
-E_range = linspace(10,15,6); % can increase precision later
+% Last point of the trajectory (with multiple possibly y values)
+E_x     = 25;                % m
+E_range = linspace(10,15,6); % m
 
-valve_data = [
+
+%% Valve values
+
+valve_dataset = [
 % percent, friction coefficient
   00,      0.87;
   10,      0.78;
@@ -69,25 +46,16 @@ valve_data = [
   100,     0.46;
 ];
 
-function save_plot(fig_handle, filename, square_size)
-    global figures_path;
 
-    if nargin < 1 || isempty(fig_handle)
-        fig_handle = gcf;
-    end
+%% Trampoline values
 
-    if nargin < 3 || isempty(square_size)
-        square_size = 6; % 6x6 inches square
-    end
+springCoefficient     = 6000; % N/m
+trampInitialHeight    = 5;    % m
+trampInitialVertSpeed = 0;    % m
 
-    [~, name, ~] = fileparts(filename);
-    base_path = fullfile(figures_path, name);
 
-    set(fig_handle, 'PaperUnits', 'inches');
-    set(fig_handle, 'PaperSize', [square_size square_size]);
-    set(fig_handle, 'PaperPosition', [0 0 square_size square_size]);
+%% Bassin values
 
-    print(fig_handle, [base_path '.pdf'], '-dpdfcairo');
+b   = 47;   % kg/m
+k_f = 0.95; % flotability constant (slightly negative)
 
-    fprintf('PDF saved: %s.pdf (%.1fx%.1f inches, CMU Serif, colored plots)\n', base_path, square_size, square_size);
-end

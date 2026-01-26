@@ -1,19 +1,14 @@
 %% - Coussin trampoline
 
-% - Effacage des données
 clc;
 clear all;
 close all;
 
-% - Variables pour design
-participantMass  = 80;    % Kg
-ballMass         = 8;     % Kg
-gravity          = 9.81;  % Newtons
-initialHeight    = 5;     % Meters
-springCoefficient = 6000;  % Newtons / meters
-initialSpeed     = 0;     % Meters per seconds
+run('00-global.m');
 
-totalMass = participantMass + ballMass;
+initialSpeed  = trampInitialVertSpeed;
+initialHeight = trampolineInitialHeight;
+totalMass     = participantMass + ballMass;
 
 % - Énergie du participant
 % - - Toute l'énergie potentiel à 5 mètre devient cinétique en touchant le coussin.

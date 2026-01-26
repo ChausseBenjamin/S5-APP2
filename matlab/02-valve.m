@@ -1,7 +1,7 @@
 run('00-global.m')
 
-valve_pcnt     = valve_data(:,1);
-valve_friction = valve_data(:,2);
+valve_pcnt     = valve_dataset(:,1);
+valve_friction = valve_dataset(:,2);
 
 x = valve_pcnt(:);       % 11x1 column
 y = valve_friction(:);   % 11x1 column
