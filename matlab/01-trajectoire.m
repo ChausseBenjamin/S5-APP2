@@ -7,15 +7,12 @@ run("00-global.m");
 figure(1); clf; hold on; axis tight;
 figure(2); clf; hold on; axis tight;
 figure(3); clf; hold on; axis tight;
-figure(4); clf; hold on; axis tight;
 
 x_base = first_points(:,1);
 y_base = first_points(:,2);
 
-% Evaluation grid for smooth plotting (cm)
-x_plot = linspace(min(x_base), E_x, 251);
-
-% Memory pre-allocation for
+% Memory pre-allocations
+x_plot = linspace(min(x_base), E_x, 251);             % x-axis resolution
 trajectories = zeros(length(x_plot), numel(E_range)); % Position data
 slopes = zeros(length(x_plot), numel(E_range));       % Derivative data
 angles = zeros(length(x_plot), numel(E_range));       % Angles in degrees
@@ -23,10 +20,10 @@ friction = zeros(length(x_plot), numel(E_range));     %
 
 % Generate a unique position and slope curve for each
 % possible E height
-for k = 1:numel(E_range)
+for E = 1:numel(E_range)
     % Construct full point set
     x = [x_base; E_x];
-    y = [y_base; E_range(k)];
+    y = [y_base; E_range(E)];
 
     % Polynomial through all points (degree = N-1)
     p = polyfit(x, y, numel(x)-1);
@@ -38,21 +35,16 @@ for k = 1:numel(E_range)
 		angle      = atan(derivative);
 
     % Store data
-    trajectories(:, k) = height;
-    slopes(:, k)       = derivative;
-    angles(:, k)       = angle;
-
-    % Calculate friction force: cos(angle)*x
-    friction(:, k) = cos(angle');
-
-    % Derivative polynomial
+    trajectories(:, E) = height;
+    slopes(:, E)       = derivative;
+    angles(:, E)       = angle;
 
     % Shape
     figure(1);
-    color_idx = mod(k-1, length(palette)) + 1;  % Cycle through colors
+    color_idx = mod(E-1, length(palette)) + 1;  % Cycle through colors
     plot(x_plot, height, 'LineWidth', 1.2, 'Color', palette{color_idx});
 	  % Slope
-    plot([E_x], [E_range(k)], 'o',
+    plot([E_x], [E_range(E)], 'o',
 	  'LineWidth', 2,
 		'Color', palette{color_idx},
 		'MarkerSize', 3);
@@ -66,12 +58,6 @@ for k = 1:numel(E_range)
 		% Angle
 		figure(3);
     plot(x_plot, angle,
-		  'LineWidth', 1.2,
-			'Color', palette{color_idx});
-
-		% Friction
-		figure(4);
-    plot(x_plot, friction(:, k),
 		  'LineWidth', 1.2,
 			'Color', palette{color_idx});
 end
@@ -100,10 +86,3 @@ xlabel('x (m)');
 ylabel('slope (°)');
 title('Slope Angle');
 save_plot(gcf, '01-angles');
-
-figure(4);
-grid on;
-xlabel('x (m)');
-ylabel('cos(θ)×x');
-title('Friction Force: cos(angle)×x');
-save_plot(gcf, '01-friction');

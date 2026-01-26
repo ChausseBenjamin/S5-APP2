@@ -44,6 +44,7 @@ first_points = [
 E_x     = 25;                % m
 E_range = linspace(10,15,12); % m
 
+initialHeight = first_points(1,2);
 
 %% Valve values
 
