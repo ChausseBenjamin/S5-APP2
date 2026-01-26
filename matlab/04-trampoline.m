@@ -6,36 +6,33 @@ close all;
 
 run('00-global.m');
 
-initialSpeed  = trampInitialVertSpeed;
+% - Variables pour le design
 initialHeight = trampInitialHeight;
 totalMass     = participantMass + ballMass;
 
-% - energie du participant
-% - - Toute l'energie potentiel a 5 metre devient cinetique en touchant le coussin.
-% - - Si on a une energie cinetique initial, alors elle est simplement additionnee.
+% - Energie potentielle gravitationnelle a 5 metres
+% - - = m * g * h_0
+energyAtTrampHeight = totalMass * gravity * initialHeight;
+% - Energie potentielle lors de la deflection du ressort
+% - - = m*g*x. Le x est un coefficient.
+potentialEnergyDeflexion = totalMass * gravity;
+% - Energie du ressort
+% - - = (1/2) * k_c * x^2. x^2 est un coefficient.
+springEnergy = -0.5 * springCoefficient;
 
-% - - energie cinetique initial
-initialKineticEnergy = 0.5 * totalMass * (initialSpeed^2);
-% - - energie potentielle a 5 metres
-potentialEnergyAtDistance = totalMass * gravity * initialHeight;
-% - - energie mecanique a l'impact avec le coussin. Em = Ep + Ec
-participantEnergyAtImpact = initialKineticEnergy + potentialEnergyAtDistance;
-
-% - Distance de deformation / equilibre
-% - - energie du participant = energie du ressort
-distance = sqrt(participantEnergyAtImpact / (0.5 * springCoefficient));
+% - Deflexion total du coussin trampoline.
+distance = roots([springEnergy, potentialEnergyDeflexion, energyAtTrampHeight]);
+% - On veut les positifs... Ca ferais pas de sense que le ressort deflechisse vers le participant lol.
+deflexionX = max(distance);
 
 % - Displays
-disp(['masse du participant:  ', num2str(participantMass), 'kg'])
-disp(['masse du ballon:       ', num2str(ballMass), 'kg'])
-disp(['masse des deux:        ', num2str(totalMass), 'kg'])
+disp('Masses:')
+disp(['    - participant:  ', num2str(participantMass), 'kg'])
+disp(['    - ballon:       ', num2str(ballMass), 'kg'])
+disp(['    - total:        ', num2str(totalMass), 'kg'])
 disp('')
 disp(['hauteur de la chute:   ', num2str(initialHeight), 'm'])
-disp(['vitesse initial:       ', num2str(initialSpeed), 'm/s'])
+disp(['vitesse initial:       ', num2str(0), 'm/s'])
 disp(['coefficient de raideur: ', num2str(springCoefficient), ' N/m'])
 disp('')
-disp(['energie cinetique initial:            ', num2str(initialKineticEnergy), 'J'])
-disp(['energie potentielle a hauteur h0:     ', num2str(potentialEnergyAtDistance), 'J'])
-disp(['energie que le ressort doit absorbee: ', num2str(participantEnergyAtImpact), 'J'])
-disp('')
-disp(['distance de deformation du ressort:   ', num2str(distance), 'm'])
+disp(['distance de deformation du coussin:   ', num2str(deflexionX), 'm'])
