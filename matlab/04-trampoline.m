@@ -7,12 +7,11 @@ close all;
 run('00-global.m');
 
 % - Variables pour le design
-initialHeight = trampInitialHeight;
 totalMass     = participantMass + ballMass;
 
 % - Energie potentielle gravitationnelle a 5 metres
 % - - = m * g * h_0
-energyAtTrampHeight = totalMass * gravity * initialHeight;
+energyAtTrampHeight = totalMass * gravity * trampFallHeight;
 % - Energie potentielle lors de la deflection du ressort
 % - - = m*g*x. Le x est un coefficient.
 potentialEnergyDeflexion = totalMass * gravity;
@@ -31,8 +30,10 @@ disp(['    - participant:  ', num2str(participantMass), 'kg'])
 disp(['    - ballon:       ', num2str(ballMass), 'kg'])
 disp(['    - total:        ', num2str(totalMass), 'kg'])
 disp('')
-disp(['hauteur de la chute:   ', num2str(initialHeight), 'm'])
+disp(['hauteur de la chute:   ', num2str(trampFallHeight), 'm'])
 disp(['vitesse initial:       ', num2str(0), 'm/s'])
 disp(['coefficient de raideur: ', num2str(springCoefficient), ' N/m'])
+disp(['marge de s¨¦curit¨¦:     ', num2str(trampSafetyMargin), 'm'])
 disp('')
 disp(['distance de deformation du coussin:   ', num2str(deflexionX), 'm'])
+disp(['hauteur coussin avec safety margin:   ', num2str(deflexionX + trampSafetyMargin), 'm'])
