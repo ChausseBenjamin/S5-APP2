@@ -38,7 +38,7 @@ ylabel('Coefficient de frottement μf', 'FontSize', 15);
 % Data points with specified color
 plot(valve_pcnt, valve_friction, 'o',
   'LineWidth', 2,
-  'Color', palette{8},
+  'Color', palette{7},
   'MarkerSize', 3);
 
 % Fitted Curve with specified color

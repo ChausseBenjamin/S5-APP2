@@ -4,14 +4,15 @@ close all
 
 run("00-global.m");
 
+figure(1); clf; hold on; axis tight;
+figure(2); clf; hold on; axis tight;
+% figure(3); clf; hold on; axis tight;
+
 x_base = first_points(:,1);
 y_base = first_points(:,2);
 
-% Evaluation grid for smooth plotting
-x_plot = linspace(min(x_base), E_x, 500);
-
-figure(1); clf; hold on; axis tight;
-figure(2); clf; hold on; axis tight;
+% Evaluation grid for smooth plotting (cm)
+x_plot = linspace(min(x_base), E_x, 2501);
 
 % Generate a unique position and slope curve for each
 % possible E height
@@ -45,6 +46,11 @@ for k = 1:numel(E_range)
     plot(x_plot, dy_plot,
 		  'LineWidth', 1.2,
 			'Color', palette{color_idx});
+
+		text(x_end, dy_end, sprintf(' %.3g', dy_end), ...
+     'Color', palette{color_idx}, ...
+     'VerticalAlignment', 'middle', ...
+     'HorizontalAlignment', 'left');
 		% Use this for the slope in degrees:
     % plot(x_plot, 180*atan(dy_plot)/pi,
 end
