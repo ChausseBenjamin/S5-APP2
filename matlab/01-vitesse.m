@@ -131,28 +131,31 @@ end
 x_limits = [min(x_plot), max(x_plot)];
 x_final_limits = [20, max(x_plot)]; % Final speed lines only from x=20 to end
 
-% Overall min/max speed
+% Overall min/max speed (no legend entries)
 plot(x_limits, [minSpeed, minSpeed], '--',
   'Color', [1.0, 0.5, 0.5],
 	'LineWidth', 1.5, ...
-	'DisplayName', sprintf('Min Speed (%.1f m/s)', minSpeed));
+	'HandleVisibility', 'off');
 
 plot(x_limits, [maxSpeed, maxSpeed], '--',
   'Color', [1.0, 0.5, 0.5],
 	'LineWidth', 1.5, ...
-	'DisplayName', sprintf('Max Speed (%.1f m/s)', maxSpeed));
+	'HandleVisibility', 'off');
 
-% Final speeds min/max
+% Final speeds min/max (no legend entries)
 plot(x_final_limits, [minFinalSpeed, minFinalSpeed], '--',
   'Color', [1.0, 0.6, 0.0],
 	'LineWidth', 1.5, ...
-	'DisplayName',
-  sprintf('Min Final Speed (%.1f m/s)', minFinalSpeed));
+	'HandleVisibility', 'off');
 
 plot(x_final_limits, [maxFinalSpeed, maxFinalSpeed], '--',
   'Color', [1.0, 0.6, 0.0],
 	'LineWidth', 1.5, ...
-	'DisplayName', sprintf('Max Final Speed (%.1f m/s)', maxFinalSpeed));
+	'HandleVisibility', 'off');
+
+% Create invisible lines for legend grouping
+h1 = plot(NaN, NaN, '--', 'LineWidth', 1.5, 'Color', [1.0, 0.5, 0.5], 'DisplayName', 'Limites globales (10-45 km/h)');
+h2 = plot(NaN, NaN, '--', 'LineWidth', 1.5, 'Color', [1.0, 0.6, 0.0], 'DisplayName', 'Limites finales (20-25 km/h)');
 
 grid on;
 xlabel('x (m)');
