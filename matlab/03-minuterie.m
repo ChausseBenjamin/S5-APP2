@@ -8,7 +8,7 @@ close all;
 run('00-global.m');
 
 % - Variables pour design
-participantSpeed = 20/3.6; % m/s
+participantSpeed = 22.5/3.6; % m/s
 restitutionCoefficient = 0.8;    % Quand il n'attrape pas la balle
 
 % - Calculs des vitesses du participant apr¨¨s impact
@@ -19,8 +19,8 @@ finalSpeedBallNotCatched = ((participantMass*participantSpeed) + ballMass*(ballS
 timeWithBallCatched    = trapDoorLength / finalSpeedBallCatched;
 timeWithoutBallCatched = trapDoorLength / finalSpeedBallNotCatched;
 
-safeTimeWithBallCatched    = timeWithBallCatched - trapDoorTimeSecurity;
-safeTimeWithoutBallCatched = timeWithoutBallCatched + trapDoorTimeSecurity;
+safeTimeWithBallCatched    = timeWithBallCatched + trapDoorTimeSecurity;
+safeTimeWithoutBallCatched = timeWithoutBallCatched - trapDoorTimeSecurity;
 
 % - Displays
 disp('Masses:')
@@ -36,8 +36,8 @@ disp(['coefficient de restitution du ballon:              ', num2str(restitution
 disp('')
 disp(['temps pour parcourir la trappe si ballon attrap¨¦:   ', num2str(timeWithBallCatched), 's'])
 disp(['                          avec marge de s¨¦curit¨¦:   ', num2str(safeTimeWithBallCatched), 's'])
-disp(['temps pour parcourir la trappe sans ballon attrap¨¦: ', num2str(timeWithoutBallCatched), 's'])
 disp(['                          avec marge de s¨¦curit¨¦:   ', num2str(safeTimeWithoutBallCatched), 's'])
+disp(['temps pour parcourir la trappe sans ballon attrap¨¦: ', num2str(timeWithoutBallCatched), 's'])
 
 
 ##%% - Trappe, minuteries et collisions
