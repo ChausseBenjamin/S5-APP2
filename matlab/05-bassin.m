@@ -97,7 +97,7 @@ ylabel("Profondeur (m)");
 xlabel("Vitesse (m/s)");
 title("Vitesse en fonction de la profondeur APP");
 grid on;
-legend('show', 'Location', 'best');
+legend('show', 'Location', 'northeast');
 
 %% Graphique vitesse en fonction du temps
 ##figure;
