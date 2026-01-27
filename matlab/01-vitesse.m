@@ -24,10 +24,12 @@ ylabel('cos(θ)');
 title(sprintf('Friction Force Along Selected Trajectory (E = %.2f)', E_range(best_idx)));
 save_plot(gcf, '01-friction');
 
-% mu_candidates = [0.62];
-% mu_candidates = [0.66];
-% mu_candidates = [0.47:0.05:0.87];
-mu_candidates = linspace(0.62,0.66,6);
+mu_candidates = [ ...
+	% linspace(0.47,0.61,6), ...
+	linspace(0.62,0.66,6), ...
+	% linspace(0.72,0.87,3)...
+];
+
 
 % Memory pre-allocation - ensure proper dimensions
 if size(x_plot, 1) == 1
@@ -45,18 +47,6 @@ for i = 1:length(x_plot)
 	idx = x_plot <= x_plot(i);
 	x_subset = x_plot(idx);
 	angle_subset = angle(idx);
-	slope_subset = slope(idx);  % dy/dx values
-
-	% Ensure vectors are column vectors for consistent operations
-	if size(x_subset, 1) == 1
-		x_subset = x_subset';
-	end
-	if size(angle_subset, 1) == 1
-		angle_subset = angle_subset';
-	end
-	if size(slope_subset, 1) == 1
-		slope_subset = slope_subset';
-	end
 
 	% Friction work integrand: F_friction = μ·mg·cos(θ)
 	% Since ds = dx/cos(θ), we have:

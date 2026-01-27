@@ -38,7 +38,7 @@ figure;
 hold on;
 grid on;
 
-title('Friction selon l''ouverture de la valve', 'FontSize', 17);
+% title('Friction selon l''ouverture de la valve', 'FontSize', 17);
 xlabel('Ouverture de la valve (%)', 'FontSize', 15);
 ylabel('Coefficient de frottement μf', 'FontSize', 15);
 
