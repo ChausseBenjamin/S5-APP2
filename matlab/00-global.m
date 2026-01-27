@@ -35,14 +35,14 @@ safeSpeedFactor  = 1.10; % Pourcentage de la vitesse d'equilibre qui est permit 
 first_points = [
 % x: m  y: m
 	0,    30; % A
-	8,    19; % B
+	7,    20; % B
 	15,   20; % C
 	20,   16; % D
 ];
 
 % Last point of the trajectory (with multiple possibly y values)
 E_x     = 25;                % m
-E_range = linspace(10,15,12); % m
+E_range = [10:0.5:15] % m
 
 initialHeight = first_points(1,2);
 

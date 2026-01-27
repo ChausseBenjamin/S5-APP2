@@ -1,7 +1,3 @@
-clc
-clear all
-close all
-
 run("00-global.m");
 
 figure(1); clf; hold on; axis tight;
@@ -12,7 +8,7 @@ x_base = first_points(:,1);
 y_base = first_points(:,2);
 
 % Memory pre-allocations
-x_plot = linspace(min(x_base), E_x, 26);             % x-axis resolution
+x_plot = linspace(min(x_base), E_x, 251);             % x-axis resolution
 trajectories = zeros(length(x_plot), numel(E_range)); % Position data
 slopes = zeros(length(x_plot), numel(E_range));       % Derivative data
 angles = zeros(length(x_plot), numel(E_range));       % Angles in degrees
@@ -42,7 +38,9 @@ for k = 1:numel(E_range)
     % Shape
     figure(1);
     color_idx = mod(k-1, length(palette)) + 1;  % Cycle through colors
-    plot(x_plot, height, 'LineWidth', 1.2, 'Color', palette{color_idx});
+    plot(x_plot, height,
+			'Color', palette{color_idx},
+		  'LineWidth', 1.2);
 	  % Slope
     plot([E_x], [E_range(k)], 'o',
 	  'LineWidth', 2,
@@ -52,14 +50,14 @@ for k = 1:numel(E_range)
     % Slope (derivative)
     figure(2);
     plot(x_plot, derivative,
-	  'LineWidth', 1.2,
-		'Color', palette{color_idx});
+		'Color', palette{color_idx},
+	  'LineWidth', 1.2);
 
 		% Angle
 		figure(3);
     plot(x_plot, angle,
-		  'LineWidth', 1.2,
-			'Color', palette{color_idx});
+			'Color', palette{color_idx},
+		  'LineWidth', 1.2);
 end
 
 figure(1);
@@ -70,7 +68,7 @@ title('Polynomial trajectories');
 plot(x_base, y_base, 'o',
   'LineWidth', 2,
   'Color', palette{7},
-  'MarkerSize', 3)
+  'MarkerSize', 3);
 save_plot(gcf, '01-trajectories');
 
 figure(2);

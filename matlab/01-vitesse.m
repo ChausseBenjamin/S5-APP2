@@ -1,11 +1,18 @@
-run('global')
+run('00-global.m')
 run('02-valve.m')
 run('01-trajectoire.m')
 
-% Extract data for the best candidate E = 12.5
-% Find the index corresponding to E = 12.5 in E_range
-[~, best_idx] = min(abs(E_range - 12.5));
-fprintf('Selected E = %.2f (index %d)\n', E_range(best_idx), best_idx);
+% Declare variables as global for the calculate_speed function
+global work_integral_base trajectory participantMass gravity initialHeight;
+
+% Select the E value where the final slope is closest to 0 (horizontal ending)
+final_slopes = slopes(end, :);  % Get the final slope for each E value
+[~, best_idx] = min(abs(final_slopes));  % Find index with slope closest to 0
+fprintf('Final slopes for each E: ');
+fprintf('%.4f ', final_slopes);
+fprintf('\n');
+fprintf('Selected E = %.2f (index %d) with final slope = %.4f\n', ...
+        E_range(best_idx), best_idx, final_slopes(best_idx));
 
 % Extract vectors for the chosen trajectory
 trajectory = trajectories(:, best_idx);  % Position data for E = 12.5
@@ -13,17 +20,22 @@ slope = slopes(:, best_idx);             % Derivative data for E = 12.5
 angle = angles(:, best_idx);             % Angle data for E = 12.5
 friction = cos(angle);                   % Friction
 
-% Plot the friction for this trajectory (without coefficient which is a constant)
+% Plot the friction for this trajectory
+% (without coefficient which is a constant to be decided later)
 figure(4); clf; hold on; axis tight;
-plot(x_plot, friction, 'LineWidth', 2, 'Color', 'red');
+plot(x_plot, friction,
+  'Color', 'red',
+  'LineWidth', 2);
 grid on;
 xlabel('x (m)');
 ylabel('cos(θ)');
-title('Friction Force Along Selected Trajectory (E = 12.5)');
+title('Friction Force Along Selected Trajectory');
 save_plot(gcf, '01-friction');
 
-mu_candidates = [0.62];
-% mu_candidates = [0.55:0.01:0.70];
+% mu_candidates = [0.62];
+% mu_candidates = [0.66];
+% mu_candidates = [0.47:0.05:0.87];
+mu_candidates = linspace(0.62,0.66,6);
 
 % Check dimensions for debugging
 fprintf('x_plot size: [%d, %d]\n', size(x_plot, 1), size(x_plot, 2));
@@ -80,20 +92,11 @@ for k = 1:numel(mu_candidates);
 	mu = mu_candidates(k);
 	fprintf('Processing mu = %.2f\n', mu);
 
-	% Calculate friction work: W = μ·m·g·∫cos(θ)·ds
-	% Note: using participantMass from 00-global.m
-	friction_work = mu * participantMass * gravity * work_integral_base;
-	friction_works(:, k) = friction_work; % Store for this mu
-
-	% Calculate speed using energy conservation:
-	% ½mv² = mg(h₀ - h(x)) - W_friction
-	% Speed(x) = sqrt(2*gravity * (initialHeight - trajectory(x)) - 2*friction_work/mass)
-	speed_squared = 2 * gravity * (initialHeight - trajectory) - 2 * friction_work / participantMass;
-
-	% Ensure no negative values under square root (physics constraint)
-	speed = sqrt(speed_squared);
+	% Calculate friction work and speed using the function
+	[speed, friction_work] = calculate_speed(mu);
 
 	speeds(:, k) = speed; % Store for this mu
+	friction_works(:, k) = friction_work; % Store for this mu
 
 	% Plot this speed curve
 	color_idx = mod(k-1, length(palette)) + 1; % Cycle through colors
