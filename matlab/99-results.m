@@ -3,6 +3,7 @@ clear all;
 close all;
 
 run('01-vitesse.m');
+run('02-valve.m');
 fprintf("\n\n\n");
 
 fprintf("E_y choisi: %.2f\n", trajectory(end));

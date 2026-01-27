@@ -57,5 +57,5 @@ function result = kph2mps(s)
 end
 
 function result = mps2kph(s)
-	result = s*3.6
+	result = s*3.6;
 end

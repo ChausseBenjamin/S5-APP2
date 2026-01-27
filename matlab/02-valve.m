@@ -1,4 +1,7 @@
-run('00-global.m')
+% Import guard - ensure global variables are loaded
+if ~exist('first_points', 'var') || ~exist('E_range', 'var')
+    run('00-global.m');
+end
 
 valve_pcnt     = valve_dataset(:,1);
 valve_friction = valve_dataset(:,2);
