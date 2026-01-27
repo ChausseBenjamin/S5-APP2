@@ -23,69 +23,24 @@ safeTimeWithBallCatched    = timeWithBallCatched + trapDoorTimeSecurity;
 safeTimeWithoutBallCatched = timeWithoutBallCatched - trapDoorTimeSecurity;
 
 % - Displays
+disp(['coefficient de restitution du ballon: ', num2str(restitutionCoefficient), ''])
 disp('Masses:')
 disp(['    - participant: ', num2str(participantMass), 'kg'])
 disp(['    - ballon:      ', num2str(ballMass), 'kg'])
-disp('')
-disp(['vitesse initiale du participant: ', num2str(participantSpeed), ' m/s'])
-disp(['vitesse initiale du ballon:      ', num2str(ballSpeed), ' m/s'])
-disp('')
-disp(['vitesse final du participant quand ballon attrap¨¦: ', num2str(finalSpeedBallCatched), ' m/s'])
-disp(['vitesse final du participant quand pas de ballon:  ', num2str(finalSpeedBallNotCatched), ' m/s'])
-disp(['coefficient de restitution du ballon:              ', num2str(restitutionCoefficient), ''])
-disp('')
-disp(['temps pour parcourir la trappe si ballon attrap¨¦:   ', num2str(timeWithBallCatched), 's'])
-disp(['                          avec marge de s¨¦curit¨¦:   ', num2str(safeTimeWithBallCatched), 's'])
-disp(['                          avec marge de s¨¦curit¨¦:   ', num2str(safeTimeWithoutBallCatched), 's'])
-disp(['temps pour parcourir la trappe sans ballon attrap¨¦: ', num2str(timeWithoutBallCatched), 's'])
-
-
-##%% - Trappe, minuteries et collisions
-##clc;
-##clear all;
-##close all;
-##
-##% - Fetch les variables de configurations
-##run('00-global.m');
-##
-##% - Variables pour design
-##participantSpeed = 20/3.6; % m/s
-##
-##% - Coefficient de restitution (balayage)
-##restitutionCoefficient = linspace(0, 0.8, 100);
-##
-##% - Vitesse finale si ballon attrap¨¦ (constante)
-##finalSpeedBallCatched = ((participantMass*participantSpeed) + (ballMass * ballSpeed)) ...
-##                        / (ballMass + participantMass);
-##
-##% - Vitesse finale si ballon NON attrap¨¦ (fonction de e)
-##finalSpeedBallNotCatched = ((participantMass*participantSpeed) ...
-##                           + ballMass*(ballSpeed + restitutionCoefficient .* (ballSpeed - participantSpeed))) ...
-##                           / (ballMass + participantMass);
-##
-##% - Temps pour parcourir la trappe
-##timeWithBallCatched    = trapDoorLength ./ finalSpeedBallCatched;
-##timeWithoutBallCatched = trapDoorLength ./ finalSpeedBallNotCatched;
-##
-##% - Marges de s¨¦curit¨¦
-##safeTimeWithBallCatched    = timeWithBallCatched - trapDoorTimeSecurity;
-##safeTimeWithoutBallCatched = timeWithoutBallCatched + trapDoorTimeSecurity;
-##
-##%% - Graphique
-##figure;
-##hold on;
-##grid on;
-##
-##plot(restitutionCoefficient, timeWithoutBallCatched, 'r', 'LineWidth', 2);
-##plot(restitutionCoefficient, safeTimeWithoutBallCatched, 'r', 'LineWidth', 1);
-##plot(restitutionCoefficient, timeWithBallCatched * ones(size(restitutionCoefficient)), ...
-##     'b--', 'LineWidth', 2);
-##plot(restitutionCoefficient, safeTimeWithBallCatched * ones(size(restitutionCoefficient)), ...
-##     'b--', 'LineWidth', 1);
-##
-##xlabel('Coefficient de restitution');
-##ylabel('Temps pour parcourir la trappe (s)');
-##title('Temps de parcours en fonction du coefficient de restitution');
-##
-##legend('Sans ballon attrap¨¦', 'Ballon attrap¨¦', 'Location', 'best');
-
+disp('Vitesses initiaux')
+disp(['    - participant: ', num2str(participantSpeed), ' m/s'])
+disp(['    - ballon:      ', num2str(ballSpeed), ' m/s'])
+disp('Vitesses finaux')
+disp(['    - si ballon attrape:   ', num2str(finalSpeedBallCatched), ' m/s'])
+disp(['    - sans ballon attrape: ', num2str(finalSpeedBallNotCatched), ' m/s'])
+disp(['    - difference:           ', num2str(finalSpeedBallCatched-finalSpeedBallNotCatched), ' m/s'])
+disp('Temps de parcours de la trappe')
+disp(['    - si ballon attrape:   ', num2str(timeWithBallCatched), 's'])
+disp(['    - sans ballon attrape: ', num2str(timeWithoutBallCatched), 's'])
+disp(['    - difference de temps:  ', num2str(timeWithoutBallCatched-timeWithBallCatched), 's'])
+disp('Avec marges de securite')
+disp(['    - si ballon attrape:   ', num2str(safeTimeWithBallCatched), 's'])
+disp(['    - sans ballon attrape: ', num2str(safeTimeWithoutBallCatched), 's'])
+disp(['    - difference de temps:  ', num2str(safeTimeWithoutBallCatched-safeTimeWithBallCatched), 's'])
+disp('Choix de la minuterie')
+disp(['    - ', num2str((safeTimeWithoutBallCatched+safeTimeWithBallCatched)/2), 's'])
