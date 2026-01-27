@@ -11,11 +11,11 @@ x_base = first_points(:,1);
 y_base = first_points(:,2);
 
 % Memory pre-allocations
-x_plot       = linspace(min(x_base), E_x, 2501);             % x-axis resolution
+x_plot       = linspace(min(x_base), E_x, 2501);      % x-axis resolution
 trajectories = zeros(length(x_plot), numel(E_range)); % Position data
-slopes       = zeros(length(x_plot), numel(E_range));       % Derivative data
-angles       = zeros(length(x_plot), numel(E_range));       % Angles in degrees
-friction     = zeros(length(x_plot), numel(E_range));     %
+slopes       = zeros(length(x_plot), numel(E_range)); % Derivative data
+angles       = zeros(length(x_plot), numel(E_range)); % Angles in degrees
+friction     = zeros(length(x_plot), numel(E_range));
 
 % Generate a unique position and slope curve for each
 % possible E height
@@ -77,7 +77,6 @@ plot(x_base, y_base, 'o',
   'LineWidth', 2,
   'Color', palette{7},
   'MarkerSize', 3);
-% Create legend labels for each energy level
 legend_labels = cell(numel(E_range), 1);
 for i = 1:numel(E_range)
     legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
@@ -90,7 +89,6 @@ grid on;
 xlabel('x (m)');
 ylabel('𝑑𝑦/𝑑𝑥');
 title('Derivatives of trajectories');
-% Create legend labels for each energy level
 legend_labels = cell(numel(E_range), 1);
 for i = 1:numel(E_range)
     legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
@@ -103,7 +101,6 @@ grid on;
 xlabel('x (m)');
 ylabel('slope (°)');
 title('Slope Angle');
-% Create legend labels for each energy level
 legend_labels = cell(numel(E_range), 1);
 for i = 1:numel(E_range)
     legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
