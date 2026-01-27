@@ -23,7 +23,8 @@ position(1) = poolFallHeight; % La position debute a l'hauteur du pont pierre-la
 speed(1) = 0;                 % la vitesse du participant est mis a 0. Pas specifier dans le guide.
 
 % - Vitesse d'equilibre
-speedEquilibrium = sqrt(((-totalMass*gravity*(buoyancyConstant - 1)))/(hydroCoefficient));
+%speedEquilibrium = sqrt(((-totalMass*gravity*(buoyancyConstant - 1)))/(hydroCoefficient));
+speedEquilibrium = sqrt((-gravity*(buoyancyConstant-1))/((hydroCoefficient)/(participantMass)));
 safeEquilibriumSpeed = speedEquilibrium * safeSpeedFactor;
 equilibriumXLine = -speedEquilibrium * ones(1, (simulationDuration/timeIncrements) +1);
 safeEquilibriumXLine = -safeEquilibriumSpeed * ones(1, (simulationDuration/timeIncrements) +1);
@@ -37,20 +38,17 @@ for i = 1:sizeOfTime-1
     % Choix du milieu
     if position(i) >= 0
         acceleration(i) = -gravity;
-        %disp(acceleration(i))
         timeIndexWaterHit = i;
     else
-        %acceleration(i) = -gravity;
         acceleration(i) = -(1 - buoyancyConstant)*gravity + (hydroCoefficient/totalMass)*(speed(i)*speed(i));
-        %disp(acceleration(i))
     end
 
     % - Int¨¦gration pour obtenir la vitesse et la position
     speed(i+1) = speed(i) + acceleration(i)*timeIncrements;
     position(i+1) = position(i) + speed(i+1)*timeIncrements;
 
-    if abs(speed(i+1) - (-safeEquilibriumSpeed)) <= 0.0001
-      % - Vitesse securitaire. Enregistre la position.
+    % - Vitesse securitaire. Enregistre la position.
+    if abs(speed(i+1) - (-safeEquilibriumSpeed)) <= 0.00005
       simulatedSafeDepth = position(i+1);
     endif
 end
@@ -70,7 +68,7 @@ linearA = gravity*(buoyancyConstant-1) + (hydroCoefficient / participantMass) * 
 depth = (((safeEquilibriumSpeed^2) - (speedWhenWaterHit^2))/2)/(linearA);
 
 % - Pour graphiques
-appSpeed = linspace(speedEquilibrium, speedWhenWaterHit, sizeOfTime);
+appSpeed = linspace(safeEquilibriumSpeed, speedWhenWaterHit, sizeOfTime);
 graphTaylored = (speedEquilibrium.^2) + 2 .* speedEquilibrium.*(appSpeed - speedEquilibrium);
 graphLinearA = gravity.*(buoyancyConstant-1) + (hydroCoefficient / participantMass) .* (graphTaylored);
 
@@ -83,7 +81,7 @@ graphDepth = graphDepth - graphDepth(end);
 
 
 
-%% Graphique de la vitesse en fonction du temps, lin¨¦aris¨¦.
+%% APP - Graphique de la vitesse en fonction du temps, lin¨¦aris¨¦.
 figure;
 hold on;
 plot(appSpeed, graphDepth, "LineWidth", 2, "Color", palette{1});
