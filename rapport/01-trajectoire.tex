@@ -1,0 +1,28 @@
+La glissade doit absolument passer par 4 points fixes ($A$,$B$,$C$,$D$) et un
+point dont la hauteur est variable entre 10 et 15 mètres ($E$). Si
+les coordonés exactes du point $E$ étaient connues à l'avance, créer un fonction
+polynomiale passant par les 5 points pourrait être résolue en utilisant les
+coordonés pour développer un système d'équations avec 5 équations et 4 inconnus
+(polynomiale d'ordre 3). Plusieures suppositions sont émises dans Matlab,
+chacunes avec une valeur de $E$ différentes et uniformément réparties dans la
+plage permise. Pour chaque système d'équation, les coefficients de la
+polynomiale sont résolues. Afin d'être bref seul la résolution pour le $E$
+choisi est montrée puisque la démarche est toujours la même (le choix est justifié
+plus tard):
+
+\begin{align}
+	F(x) &= a_0 + a_1 x^1 + a_2 x^2 + a_3 x^3 \\
+\begin{bmatrix} 30\\ 20\\ 20\\ 16\\ 12.5 \end{bmatrix}
+&=
+\begin{bmatrix}
+1 & 0 & 0^2 & 0^3 & 0^4\\
+1 & 7 & 7^2 & 7^3 & 7^4\\
+1 & 15 & 15^2 & 15^3 & 15^4\\
+1 & 20 & 20^2 & 20^3 & 20^4\\
+1 & 25 & 25^2 & 25^3 & 25^4
+\end{bmatrix}
+\begin{bmatrix} a_0\\ a_1\\ a_2\\ a_3\\ a_4 \end{bmatrix} \Rightarrow
+\begin{bmatrix} a_0\\ a_1\\ a_2\\ a_3\\ a_4 \end{bmatrix}
+\end{align}
+
+
