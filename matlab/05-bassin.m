@@ -13,64 +13,22 @@ sizeOfTime = length(time);
 totalMass = participantMass + ballMass;
 timeIndexWaterHit = 0;
 
-% - Axes vides qu'on vas remplir point par point.
-position = zeros(1, sizeOfTime);
-speed = zeros(1, sizeOfTime);
-acceleration = zeros(1, sizeOfTime);
-
-% - Conditions initiales
-position(1) = poolFallHeight; % La position debute a l'hauteur du pont pierre-laporte. A pos=0 on frappe le fleuve saint-laurent.
-speed(1) = 0;                 % la vitesse du participant est mis a 0. Pas specifier dans le guide.
+% - Methodologie de l'APP
 
 % - Vitesse d'equilibre
-speedEquilibrium = sqrt(((-totalMass*gravity*(buoyancyConstant - 1)))/(hydroCoefficient));
+speedEquilibrium = sqrt((-gravity*(buoyancyConstant-1))/((hydroCoefficient)/(participantMass)));
 safeEquilibriumSpeed = speedEquilibrium * safeSpeedFactor;
-equilibriumXLine = -speedEquilibrium * ones(1, (simulationDuration/timeIncrements) +1);
-safeEquilibriumXLine = -safeEquilibriumSpeed * ones(1, (simulationDuration/timeIncrements) +1);
-
-simulatedSafeDepth = 0;
-timeIndexWaterHit = 0;
-
-% - Simulation.
-for i = 1:sizeOfTime-1
-
-    % Choix du milieu
-    if position(i) >= 0
-        acceleration(i) = -gravity;
-        %disp(acceleration(i))
-        timeIndexWaterHit = i;
-    else
-        %acceleration(i) = -gravity;
-        acceleration(i) = -(1 - buoyancyConstant)*gravity + (hydroCoefficient/totalMass)*(speed(i)*speed(i));
-        %disp(acceleration(i))
-    end
-
-    % - Int¨¦gration pour obtenir la vitesse et la position
-    speed(i+1) = speed(i) + acceleration(i)*timeIncrements;
-    position(i+1) = position(i) + speed(i+1)*timeIncrements;
-
-    if abs(speed(i+1) - (-safeEquilibriumSpeed)) <= 0.0001
-      % - Vitesse securitaire. Enregistre la position.
-      simulatedSafeDepth = position(i+1);
-    endif
-end
-
-
-
-
-
-
-
- % - M¨¦thode de l'APP
 speedEquilibrium = -speedEquilibrium;
 safeEquilibriumSpeed = -safeEquilibriumSpeed;
+
+% - Calculs a travers la linearization
 speedWhenWaterHit = -sqrt(2*gravity*poolFallHeight);
 taylored = (speedEquilibrium^2) + 2*speedEquilibrium*(speedWhenWaterHit - speedEquilibrium);
 linearA = gravity*(buoyancyConstant-1) + (hydroCoefficient / participantMass) * taylored;
 depth = (((safeEquilibriumSpeed^2) - (speedWhenWaterHit^2))/2)/(linearA);
 
 % - Pour graphiques
-appSpeed = linspace(speedEquilibrium, speedWhenWaterHit, sizeOfTime);
+appSpeed = linspace(safeEquilibriumSpeed, speedWhenWaterHit, sizeOfTime);
 graphTaylored = (speedEquilibrium.^2) + 2 .* speedEquilibrium.*(appSpeed - speedEquilibrium);
 graphLinearA = gravity.*(buoyancyConstant-1) + (hydroCoefficient / participantMass) .* (graphTaylored);
 
@@ -78,12 +36,7 @@ graphLinearA = gravity.*(buoyancyConstant-1) + (hydroCoefficient / participantMa
 graphDepth = -((((safeEquilibriumSpeed^2) - (appSpeed.^2))/2)./(graphLinearA));
 graphDepth = graphDepth - graphDepth(end);
 
-
-
-
-
-
-%% Graphique de la vitesse en fonction du temps, lin¨¦aris¨¦.
+%% APP - Graphique de la vitesse en fonction du temps, lin¨¦aris¨¦.
 figure;
 hold on;
 plot(appSpeed, graphDepth, "LineWidth", 2, "Color", palette{1});
@@ -98,6 +51,47 @@ xlabel("Vitesse (m/s)");
 title("Vitesse en fonction de la profondeur APP");
 grid on;
 legend('show', 'Location', 'northeast');
+
+
+
+% - SIMULATION DE LA POSITION DANS LE TEMPS COMPLET - Pas demander dans la problematique
+
+% - Axes vides qu'on vas remplir point par point.
+position = zeros(1, sizeOfTime);
+speed = zeros(1, sizeOfTime);
+acceleration = zeros(1, sizeOfTime);
+
+% - Conditions initiales
+position(1) = poolFallHeight; % La position debute a l'hauteur du pont pierre-laporte. A pos=0 on frappe le fleuve saint-laurent.
+speed(1) = 0;                 % la vitesse du participant est mis a 0. Pas specifier dans le guide.
+
+% - Vitesse d'equilibre
+equilibriumXLine = -speedEquilibrium * ones(1, (simulationDuration/timeIncrements) +1);
+safeEquilibriumXLine = -safeEquilibriumSpeed * ones(1, (simulationDuration/timeIncrements) +1);
+
+simulatedSafeDepth = 0;
+timeIndexWaterHit = 0;
+
+% - Simulation.
+for i = 1:sizeOfTime-1
+
+    % Choix du milieu
+    if position(i) >= 0
+        acceleration(i) = -gravity;
+        timeIndexWaterHit = i;
+    else
+        acceleration(i) = -(1 - buoyancyConstant)*gravity + (hydroCoefficient/totalMass)*(speed(i)*speed(i));
+    end
+
+    % - Int¨¦gration pour obtenir la vitesse et la position
+    speed(i+1) = speed(i) + acceleration(i)*timeIncrements;
+    position(i+1) = position(i) + speed(i+1)*timeIncrements;
+
+    % - Vitesse securitaire. Enregistre la position.
+    if abs(speed(i+1) - (safeEquilibriumSpeed)) <= 0.00005
+      simulatedSafeDepth = position(i+1);
+    endif
+end
 
 %% Graphique vitesse en fonction du temps
 ##figure;
