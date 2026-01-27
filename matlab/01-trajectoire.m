@@ -1,4 +1,4 @@
-run("00-global.m");
+% Note: 00-global.m is already run by the calling script
 
 figure(1); clf; hold on; axis tight;
 figure(2); clf; hold on; axis tight;

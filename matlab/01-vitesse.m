@@ -2,9 +2,6 @@ run('00-global.m')
 run('02-valve.m')
 run('01-trajectoire.m')
 
-% Declare variables as global for the calculate_speed function
-global work_integral_base trajectory participantMass gravity initialHeight;
-
 % Select the E value where the final slope is closest to 0 (horizontal ending)
 final_slopes = slopes(end, :);  % Get the final slope for each E value
 [~, best_idx] = min(abs(final_slopes));  % Find index with slope closest to 0
@@ -15,9 +12,9 @@ fprintf('Selected E = %.2f (index %d) with final slope = %.4f\n', ...
         E_range(best_idx), best_idx, final_slopes(best_idx));
 
 % Extract vectors for the chosen trajectory
-trajectory = trajectories(:, best_idx);  % Position data for E = 12.5
-slope = slopes(:, best_idx);             % Derivative data for E = 12.5
-angle = angles(:, best_idx);             % Angle data for E = 12.5
+trajectory = trajectories(:, best_idx);  % Position data for selected E
+slope = slopes(:, best_idx);             % Derivative data for selected E
+angle = angles(:, best_idx);             % Angle data for selected E
 friction = cos(angle);                   % Friction
 
 % Plot the friction for this trajectory
@@ -29,7 +26,7 @@ plot(x_plot, friction,
 grid on;
 xlabel('x (m)');
 ylabel('cos(θ)');
-title('Friction Force Along Selected Trajectory');
+title(sprintf('Friction Force Along Selected Trajectory (E = %.2f)', E_range(best_idx)));
 save_plot(gcf, '01-friction');
 
 % mu_candidates = [0.62];
@@ -92,8 +89,32 @@ for k = 1:numel(mu_candidates);
 	mu = mu_candidates(k);
 	fprintf('Processing mu = %.2f\n', mu);
 
-	% Calculate friction work and speed using the function
-	[speed, friction_work] = calculate_speed(mu);
+	% Calculate friction work and speed inline
+	% Initialize arrays for this mu
+	speed = zeros(length(x_plot), 1);
+	friction_work = zeros(length(x_plot), 1);
+
+	% Calculate for each point along the trajectory
+	for i = 1:length(x_plot)
+		% Friction work: W_friction = μ * m * g * distance
+		friction_work(i) = mu * participantMass * gravity * work_integral_base(i);
+
+		% Total energy at point i: potential energy at that height
+		potential_energy_i = participantMass * gravity * trajectory(i);
+
+		% Initial potential energy (at starting height)
+		initial_potential_energy = participantMass * gravity * initialHeight;
+
+		% Kinetic energy: KE = Initial_PE - Current_PE - Friction_Work
+		kinetic_energy = initial_potential_energy - potential_energy_i - friction_work(i);
+
+		% Speed: v = sqrt(2*KE/m) (ensure non-negative kinetic energy)
+		if kinetic_energy >= 0
+			speed(i) = sqrt(2 * kinetic_energy / participantMass);
+		else
+			speed(i) = 0;  % Particle has stopped
+		end
+	end
 
 	speeds(:, k) = speed; % Store for this mu
 	friction_works(:, k) = friction_work; % Store for this mu
@@ -110,7 +131,18 @@ end
 x_limits = [min(x_plot), max(x_plot)];
 x_final_limits = [20, max(x_plot)]; % Final speed lines only from x=20 to end
 
-% Orange lines for final speeds (20-25 km/h) - only from x=20 to end
+% Overall min/max speed
+plot(x_limits, [minSpeed, minSpeed], '--',
+  'Color', [1.0, 0.5, 0.5],
+	'LineWidth', 1.5, ...
+	'DisplayName', sprintf('Min Speed (%.1f m/s)', minSpeed));
+
+plot(x_limits, [maxSpeed, maxSpeed], '--',
+  'Color', [1.0, 0.5, 0.5],
+	'LineWidth', 1.5, ...
+	'DisplayName', sprintf('Max Speed (%.1f m/s)', maxSpeed));
+
+% Final speeds min/max
 plot(x_final_limits, [minFinalSpeed, minFinalSpeed], '--',
   'Color', [1.0, 0.6, 0.0],
 	'LineWidth', 1.5, ...
@@ -122,17 +154,6 @@ plot(x_final_limits, [maxFinalSpeed, maxFinalSpeed], '--',
 	'LineWidth', 1.5, ...
 	'DisplayName', sprintf('Max Final Speed (%.1f m/s)', maxFinalSpeed));
 
-% Light red lines for overall speeds (15-45 km/h) - full width
-plot(x_limits, [minSpeed, minSpeed], '--',
-  'Color', [1.0, 0.5, 0.5],
-	'LineWidth', 1.5, ...
-	'DisplayName', sprintf('Min Speed (%.1f m/s)', minSpeed));
-
-plot(x_limits, [maxSpeed, maxSpeed], '--',
-  'Color', [1.0, 0.5, 0.5],
-	'LineWidth', 1.5, ...
-	'DisplayName', sprintf('Max Speed (%.1f m/s)', maxSpeed));
-
 grid on;
 xlabel('x (m)');
 ylabel('Speed (m/s)');
@@ -141,3 +162,68 @@ legend('show', 'Location', 'best');
 save_plot(gcf, '01-speeds');
 
 chosen_mu = 0.62;
+
+valve_opening = find_valve_opening(x_fit, y_fit, chosen_mu);
+[mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, valve_opening, valve_friction, R2);
+
+% Function to calculate speed for a given mu value
+function speed = calculate_speed_for_mu(mu, x_plot, trajectory, work_integral_base, participantMass, gravity, initialHeight)
+    speed = zeros(length(x_plot), 1);
+    
+    for i = 1:length(x_plot)
+        % Friction work: W_friction = μ * m * g * distance
+        friction_work_i = mu * participantMass * gravity * work_integral_base(i);
+        
+        % Total energy at point i: potential energy at that height
+        potential_energy_i = participantMass * gravity * trajectory(i);
+        
+        % Initial potential energy (at starting height)
+        initial_potential_energy = participantMass * gravity * initialHeight;
+        
+        % Kinetic energy: KE = Initial_PE - Current_PE - Friction_Work
+        kinetic_energy = initial_potential_energy - potential_energy_i - friction_work_i;
+        
+        % Speed: v = sqrt(2*KE/m) (ensure non-negative kinetic energy)
+        if kinetic_energy >= 0
+            speed(i) = sqrt(2 * kinetic_energy / participantMass);
+        else
+            speed(i) = 0;  % Particle has stopped
+        end
+    end
+end
+
+% Calculate speeds for the three mu values
+speed_min = calculate_speed_for_mu(mu_min, x_plot, trajectory, work_integral_base, participantMass, gravity, initialHeight);
+speed_target = calculate_speed_for_mu(mu_predicted, x_plot, trajectory, work_integral_base, participantMass, gravity, initialHeight);
+speed_max = calculate_speed_for_mu(mu_max, x_plot, trajectory, work_integral_base, participantMass, gravity, initialHeight);
+
+% Create the comparison plot
+figure;
+hold on;
+grid on;
+
+title('Comparaison des vitesses selon l''incertitude du coefficient de frottement', 'FontSize', 17);
+xlabel('Distance horizontale (m)', 'FontSize', 15);
+ylabel('Vitesse (m/s)', 'FontSize', 15);
+
+% Plot the three speed curves
+plot(x_plot, speed_min, '--', 'LineWidth', 2, 'Color', palette{1}, 'DisplayName', sprintf('μ_{min} = %.4f', mu_min));
+plot(x_plot, speed_target, '-', 'LineWidth', 2, 'Color', palette{2}, 'DisplayName', sprintf('μ_{cible} = %.4f', mu_predicted));
+plot(x_plot, speed_max, '--', 'LineWidth', 2, 'Color', palette{3}, 'DisplayName', sprintf('μ_{max} = %.4f', mu_max));
+
+% Add horizontal reference lines
+x_limits = [min(x_plot), max(x_plot)];
+x_final_limits = [20, max(x_plot)]; % Final speed lines only from x=20 to end
+
+% Overall min/max speed limits
+plot(x_limits, [minSpeed, minSpeed], ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'DisplayName', 'Vitesse min (10 km/h)');
+plot(x_limits, [maxSpeed, maxSpeed], ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'DisplayName', 'Vitesse max (45 km/h)');
+
+% Final speed limits (only from x=20 to end)
+plot(x_final_limits, [minFinalSpeed, minFinalSpeed], ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'DisplayName', 'Vitesse finale min (20 km/h)');
+plot(x_final_limits, [maxFinalSpeed, maxFinalSpeed], ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'DisplayName', 'Vitesse finale max (25 km/h)');
+
+axis tight;
+legend('show', 'Location', 'best');
+save_plot(gcf, '01-speed-comparison');
+
