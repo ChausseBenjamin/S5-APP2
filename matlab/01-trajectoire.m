@@ -1,4 +1,7 @@
-% Note: 00-global.m is already run by the calling script
+% Import guard - ensure global variables are loaded
+if ~exist('first_points', 'var') || ~exist('E_range', 'var')
+    run('00-global.m');
+end
 
 figure(1); clf; hold on; axis tight;
 figure(2); clf; hold on; axis tight;
@@ -8,11 +11,11 @@ x_base = first_points(:,1);
 y_base = first_points(:,2);
 
 % Memory pre-allocations
-x_plot = linspace(min(x_base), E_x, 251);             % x-axis resolution
+x_plot       = linspace(min(x_base), E_x, 2501);             % x-axis resolution
 trajectories = zeros(length(x_plot), numel(E_range)); % Position data
-slopes = zeros(length(x_plot), numel(E_range));       % Derivative data
-angles = zeros(length(x_plot), numel(E_range));       % Angles in degrees
-friction = zeros(length(x_plot), numel(E_range));     %
+slopes       = zeros(length(x_plot), numel(E_range));       % Derivative data
+angles       = zeros(length(x_plot), numel(E_range));       % Angles in degrees
+friction     = zeros(length(x_plot), numel(E_range));     %
 
 % Generate a unique position and slope curve for each
 % possible E height
@@ -39,25 +42,30 @@ for k = 1:numel(E_range)
     figure(1);
     color_idx = mod(k-1, length(palette)) + 1;  % Cycle through colors
     plot(x_plot, height,
-			'Color', palette{color_idx},
-		  'LineWidth', 1.2);
-	  % Slope
-    plot([E_x], [E_range(k)], 'o',
-	  'LineWidth', 2,
 		'Color', palette{color_idx},
-		'MarkerSize', 3);
+	  'LineWidth', 1.2);
 
     % Slope (derivative)
     figure(2);
     plot(x_plot, derivative,
+	'Color', palette{color_idx},
+  'LineWidth', 1.2);
+
+	% Angle
+	figure(3);
+    plot(x_plot, angle,
 		'Color', palette{color_idx},
 	  'LineWidth', 1.2);
+end
 
-		% Angle
-		figure(3);
-    plot(x_plot, angle,
-			'Color', palette{color_idx},
-		  'LineWidth', 1.2);
+% Add endpoint circles after the loop (so they don't affect legend)
+figure(1);
+for k = 1:numel(E_range)
+    color_idx = mod(k-1, length(palette)) + 1;
+    plot([E_x], [E_range(k)], 'o',
+  'LineWidth', 2,
+	'Color', palette{color_idx},
+	'MarkerSize', 3);
 end
 
 figure(1);
@@ -69,6 +77,12 @@ plot(x_base, y_base, 'o',
   'LineWidth', 2,
   'Color', palette{7},
   'MarkerSize', 3);
+% Create legend labels for each energy level
+legend_labels = cell(numel(E_range), 1);
+for i = 1:numel(E_range)
+    legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
+end
+legend(legend_labels, 'location', 'northeast');
 save_plot(gcf, '01-trajectories');
 
 figure(2);
@@ -76,6 +90,12 @@ grid on;
 xlabel('x (m)');
 ylabel('𝑑𝑦/𝑑𝑥');
 title('Derivatives of trajectories');
+% Create legend labels for each energy level
+legend_labels = cell(numel(E_range), 1);
+for i = 1:numel(E_range)
+    legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
+end
+legend(legend_labels, 'location', 'southeast');
 save_plot(gcf, '01-derivatives');
 
 figure(3);
@@ -83,4 +103,10 @@ grid on;
 xlabel('x (m)');
 ylabel('slope (°)');
 title('Slope Angle');
+% Create legend labels for each energy level
+legend_labels = cell(numel(E_range), 1);
+for i = 1:numel(E_range)
+    legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
+end
+legend(legend_labels, 'location', 'northwest');
 save_plot(gcf, '01-angles');

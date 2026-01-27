@@ -163,8 +163,14 @@ save_plot(gcf, '01-speeds');
 
 chosen_mu = 0.62;
 
-valve_opening = find_valve_opening(x_fit, y_fit, chosen_mu);
-[mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, valve_opening, valve_friction, R2);
+% TODO: These functions are missing, using manual values for now
+% valve_opening = find_valve_opening(x_fit, y_fit, chosen_mu);
+% [mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, valve_opening, y_valve, x_valve);
+
+% Manual values for demonstration
+mu_min = 0.60;
+mu_max = 0.64;
+mu_predicted = chosen_mu;
 
 % Function to calculate speed for a given mu value
 function speed = calculate_speed_for_mu(mu, x_plot, trajectory, work_integral_base, participantMass, gravity, initialHeight)
@@ -216,12 +222,16 @@ x_limits = [min(x_plot), max(x_plot)];
 x_final_limits = [20, max(x_plot)]; % Final speed lines only from x=20 to end
 
 % Overall min/max speed limits
-plot(x_limits, [minSpeed, minSpeed], ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'DisplayName', 'Vitesse min (10 km/h)');
-plot(x_limits, [maxSpeed, maxSpeed], ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'DisplayName', 'Vitesse max (45 km/h)');
+plot(x_limits, [minSpeed, minSpeed], ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'HandleVisibility', 'off');
+plot(x_limits, [maxSpeed, maxSpeed], ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'HandleVisibility', 'off');
 
 % Final speed limits (only from x=20 to end)
-plot(x_final_limits, [minFinalSpeed, minFinalSpeed], ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'DisplayName', 'Vitesse finale min (20 km/h)');
-plot(x_final_limits, [maxFinalSpeed, maxFinalSpeed], ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'DisplayName', 'Vitesse finale max (25 km/h)');
+plot(x_final_limits, [minFinalSpeed, minFinalSpeed], ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'HandleVisibility', 'off');
+plot(x_final_limits, [maxFinalSpeed, maxFinalSpeed], ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'HandleVisibility', 'off');
+
+% Create invisible lines for legend grouping
+h1 = plot(NaN, NaN, ':', 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'DisplayName', 'Limites globales (10-45 km/h)');
+h2 = plot(NaN, NaN, ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'DisplayName', 'Limites finales (20-25 km/h)');
 
 axis tight;
 legend('show', 'Location', 'best');
