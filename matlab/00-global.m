@@ -46,10 +46,10 @@ E_range = [10:0.5:15] % m
 
 initialHeight = first_points(1,2);
 
-minSpeed      = kph2mps(10) % m/s
-maxSpeed      = kph2mps(45) % m/s
-minFinalSpeed = kph2mps(20) % m/s
-maxFinalSpeed = kph2mps(25) % m/s
+minSpeed      = kph2mps(10); % m/s
+maxSpeed      = kph2mps(45); % m/s
+minFinalSpeed = kph2mps(20); % m/s
+maxFinalSpeed = kph2mps(25); % m/s
 
 %% Valve values
 
