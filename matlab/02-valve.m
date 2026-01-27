@@ -67,6 +67,54 @@ save_plot(gcf, '02-valve');
 
 
 
+function valve_opening = find_valve_opening(valve_coeffs, target_mu)
+    % Find valve opening percentage for a given friction coefficient
+    % Solves the quadratic equation: target_mu = a + b*x + c*x^2
+    % Rearranged to: c*x^2 + b*x + (a - target_mu) = 0
+    
+    a = valve_coeffs(1);
+    b = valve_coeffs(2);
+    c = valve_coeffs(3);
+    
+    % Quadratic formula coefficients for c*x^2 + b*x + (a - target_mu) = 0
+    A = c;
+    B = b;
+    C = a - target_mu;
+    
+    % Solve quadratic equation
+    discriminant = B^2 - 4*A*C;
+    
+    if discriminant < 0
+        error('No real solution exists for μ = %.4f', target_mu);
+    end
+    
+    % Two possible solutions
+    x1 = (-B + sqrt(discriminant)) / (2*A);
+    x2 = (-B - sqrt(discriminant)) / (2*A);
+    
+    % Choose the solution within the valid range [0, 100]
+    solutions = [x1, x2];
+    valid_solutions = solutions(solutions >= 0 & solutions <= 100);
+    
+    if isempty(valid_solutions)
+        warning('No solution within valid range [0, 100%] for μ = %.4f. Closest solutions: %.2f%%, %.2f%%', target_mu, x1, x2);
+        % Return the closest solution to the valid range
+        if abs(x1 - 50) < abs(x2 - 50)
+            valve_opening = x1;
+        else
+            valve_opening = x2;
+        end
+    elseif length(valid_solutions) == 1
+        valve_opening = valid_solutions(1);
+    else
+        % If multiple valid solutions, choose the one closer to the middle of the range
+        [~, idx] = min(abs(valid_solutions - 50));
+        valve_opening = valid_solutions(idx);
+    end
+    
+    fprintf('For μ = %.4f, valve opening = %.2f%%\n', target_mu, valve_opening);
+end
+
 function [mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, x_opening, y_valve, x_valve)
     mu_predicted = valve_coeffs(1) + valve_coeffs(2)*x_opening + valve_coeffs(3)*x_opening^2;
 

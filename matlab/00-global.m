@@ -7,25 +7,25 @@ run('99-utils.m');
 
 
 %% Global values
-gravity               = 9.81; % m/s^2
-participantMass       = 80;   % kg
+gravity         = 9.81; % m/s^2
+participantMass = 80;   % kg
 
 % Ball values
-ballMass   = 8;    % Kg
-ballSpeed  = -1;     % m/s
+ballMass   = 8;  % Kg
+ballSpeed  = -1; % m/s
 
 % Trapdoor values
-trapDoorLength       = 3;      % meters
-trapDoorTimeSecurity = 0.02;   % seconds. Marge de s¨¦curit¨¦ donn¨¦e
+trapDoorLength       = 3;    % meters
+trapDoorTimeSecurity = 0.02; % seconds. Marge de s¨¦curit¨¦ donn¨¦e
 
 %% Trampoline values
-springCoefficient  = 6000; % N/m
+springCoefficient = 6000; % N/m
 trampFallHeight   = 5;    % m hauteur du participant avant de tomber sur la trampoline.
 trampSafetyMargin = 0.5;  % 50 cm need to be added to the total of the trampoline height.
 
 %% Bassin values
 poolFallHeight   = 10;   % meters. Hauteur initial entre le participant et la hauteur de l'eau.
-hydroCoefficient  = 47;   % kg/m; b.
+hydroCoefficient = 47;   % kg/m; b.
 buoyancyConstant = 0.95; % flotability constant. k_f (slightly negative)
 safeSpeedFactor  = 1.10; % Pourcentage de la vitesse d'equilibre qui est permit de frappe le fond de la piscine
 
@@ -41,7 +41,7 @@ first_points = [
 ];
 
 % Last point of the trajectory (with multiple possibly y values)
-E_x     = 25;                % m
+E_x     = 25;         % m
 E_range = [10:0.5:15] % m
 
 initialHeight = first_points(1,2);

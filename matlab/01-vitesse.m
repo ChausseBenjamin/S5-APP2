@@ -166,14 +166,14 @@ save_plot(gcf, '01-speeds');
 
 chosen_mu = 0.62;
 
-% TODO: These functions are missing, using manual values for now
-% valve_opening = find_valve_opening(x_fit, y_fit, chosen_mu);
-% [mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, valve_opening, y_valve, x_valve);
+% Calculate the valve opening percentage for the chosen mu
+valve_opening = find_valve_opening(valve_coeffs, chosen_mu);
 
-% Manual values for demonstration
-mu_min = 0.60;
-mu_max = 0.64;
-mu_predicted = chosen_mu;
+% Get the mu range and RMS error information
+[mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, valve_opening, y_valve, x_valve);
+
+% Update chosen_mu to use the predicted value
+chosen_mu = mu_predicted;
 
 % Function to calculate speed for a given mu value
 function speed = calculate_speed_for_mu(mu, x_plot, trajectory, work_integral_base, participantMass, gravity, initialHeight)
@@ -239,4 +239,33 @@ h2 = plot(NaN, NaN, ':', 'LineWidth', 1, 'Color', [0.7, 0.3, 0.3], 'DisplayName'
 axis tight;
 legend('show', 'Location', 'best');
 save_plot(gcf, '01-speed-comparison');
+
+%% Final Results Summary
+fprintf('\n=== RÉSULTATS FINAUX ===\n');
+fprintf('Hauteur finale yf (point E): %.2f m\n', E_range(best_idx));
+fprintf('Ouverture de la valve: %.2f%%\n', valve_opening);
+fprintf('Coefficient de friction μf: %.4f\n', chosen_mu);
+fprintf('Erreur RMS dans μf: ±%.4f\n', mu_max - chosen_mu);
+
+% Extract final velocities at point E (last point in trajectory)
+final_speed_min = speed_min(end);
+final_speed_target = speed_target(end);
+final_speed_max = speed_max(end);
+
+% Calculate velocity error due to RMS error in μf
+velocity_error_negative = final_speed_target - final_speed_min;
+velocity_error_positive = final_speed_max - final_speed_target;
+velocity_error_avg = (velocity_error_negative + velocity_error_positive) / 2;
+
+fprintf('Vitesse finale au point E: %.3f m/s\n', final_speed_target);
+fprintf('Erreur dans la vitesse due à l''erreur RMS:\n');
+fprintf('  Vitesse minimum (μ = %.4f): %.3f m/s (erreur: -%.3f m/s)\n', mu_min, final_speed_min, velocity_error_negative);
+fprintf('  Vitesse maximum (μ = %.4f): %.3f m/s (erreur: +%.3f m/s)\n', mu_max, final_speed_max, velocity_error_positive);
+fprintf('  Erreur moyenne: ±%.3f m/s\n', velocity_error_avg);
+
+% Convert to km/h for reference
+fprintf('\nEn km/h:\n');
+fprintf('  Vitesse finale: %.1f km/h\n', final_speed_target * 3.6);
+fprintf('  Plage: %.1f - %.1f km/h\n', final_speed_min * 3.6, final_speed_max * 3.6);
+fprintf('  Erreur: ±%.1f km/h\n', velocity_error_avg * 3.6);
 
