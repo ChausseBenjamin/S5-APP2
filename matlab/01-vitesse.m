@@ -25,16 +25,11 @@ ylabel('cos(θ)');
 save_plot(gcf, '01-friction');
 
 mu_candidates = [ ...
-	% linspace(0.47,0.61,6), ...
-	linspace(0.62,0.66,6), ...
-	% linspace(0.72,0.87,3)...
+	linspace(0.61,0.66,6), ...
 ];
 
 
 % Memory pre-allocation - ensure proper dimensions
-if size(x_plot, 1) == 1
-	x_plot = x_plot';  % Make it a column vector
-end
 speeds = zeros(length(x_plot), numel(mu_candidates));
 
 % Pre-compute the integral part (independent of mu)
@@ -48,11 +43,6 @@ for i = 1:length(x_plot)
 	x_subset = x_plot(idx);
 	angle_subset = angle(idx);
 
-	% Friction work integrand: F_friction = μ·mg·cos(θ)
-	% Since ds = dx/cos(θ), we have:
-	% dW = μ·mg·cos(θ)·ds = μ·mg·cos(θ)·(dx/cos(θ)) = μ·mg·dx
-	% So the work integral becomes: W = μ·mg·∫dx = μ·mg·x
-	% Store the distance x for integration
 	if length(x_subset) > 1
 		work_integral_base(i) = x_subset(end) - x_subset(1); % Distance traveled
 	else
@@ -78,21 +68,13 @@ for k = 1:numel(mu_candidates);
 		% Friction work: W_friction = μ * m * g * distance
 		friction_work(i) = mu * participantMass * gravity * work_integral_base(i);
 
-		% Total energy at point i: potential energy at that height
 		potential_energy_i = participantMass * gravity * trajectory(i);
 
-		% Initial potential energy (at starting height)
 		initial_potential_energy = participantMass * gravity * initialHeight;
 
-		% Kinetic energy: KE = Initial_PE - Current_PE - Friction_Work
 		kinetic_energy = initial_potential_energy - potential_energy_i - friction_work(i);
 
-		% Speed: v = sqrt(2*KE/m) (ensure non-negative kinetic energy)
-		if kinetic_energy >= 0
-			speed(i) = sqrt(2 * kinetic_energy / participantMass);
-		else
-			speed(i) = 0;  % Particle has stopped
-		end
+		speed(i) = sqrt(2 * kinetic_energy / participantMass);
 	end
 
 	speeds(:, k) = speed; % Store for this mu
@@ -102,7 +84,7 @@ for k = 1:numel(mu_candidates);
 	color_idx = mod(k-1, length(palette)) + 1; % Cycle through colors
 	plot(x_plot, speed,
 	  'LineWidth', 2,
-		% 'Color', palette{color_idx}, ...
+		'Color', palette{color_idx}, ...
 		'DisplayName', sprintf('μ = %.2f', mu));
 end
 
@@ -195,9 +177,12 @@ xlabel('Distance horizontale (m)', 'FontSize', 15);
 ylabel('Vitesse (m/s)', 'FontSize', 15);
 
 % Plot the three speed curves
-plot(x_plot, speed_min, '--', 'LineWidth', 2, 'Color', palette{1}, 'DisplayName', sprintf('μ_{min} = %.4f', mu_min));
-plot(x_plot, speed_target, '-', 'LineWidth', 2, 'Color', palette{2}, 'DisplayName', sprintf('μ_{cible} = %.4f', mu_predicted));
-plot(x_plot, speed_max, '--', 'LineWidth', 2, 'Color', palette{3}, 'DisplayName', sprintf('μ_{max} = %.4f', mu_max));
+plot(x_plot, speed_min, '--', 'LineWidth', 2, 'Color', palette{1},
+'DisplayName', sprintf('μ_{min} = %.3f', mu_min));
+plot(x_plot, speed_target, '-', 'LineWidth', 2, 'Color', palette{2},
+'DisplayName', sprintf('μ_{cible} = %.3f', mu_predicted));
+plot(x_plot, speed_max, '--', 'LineWidth', 2, 'Color', palette{3},
+'DisplayName', sprintf('μ_{max} = %.3f', mu_max));
 
 % Add horizontal reference lines
 x_limits = [min(x_plot), max(x_plot)];

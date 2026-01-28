@@ -1,14 +1,14 @@
 La glissade doit absolument passer par 4 points fixes ($A$,$B$,$C$,$D$) et un
-point dont la hauteur est variable entre 10 et 15 mètres ($E$). Si
-les coordonées exactes du point $E$ étaient connues à l'avance, créer un fonction
+point dont la hauteur est variable entre 10 et 15 mètres ($E$). Si les
+coordonées exactes du point $E$ étaient connues à l'avance, créer un fonction
 polynomiale passant par les 5 points pourrait être résolue en utilisant les
 coordonées pour développer un système d'équations avec 5 équations et 5 inconnus
-(polynôme d'ordre 4). Plusieurs suppositions sont émises dans MATLAB,
-chacunes avec une valeur de $E$ différentes et uniformément réparties dans la
-plage permise. Pour chaque système d'équation, les coefficients du
-polynôme sont résolues. Afin d'être bref seul la résolution pour le $E$
-choisi est montrée puisque la démarche est toujours la même (le choix sera
-justifié plus tard):
+(polynôme d'ordre 4). Plusieurs suppositions sont émises dans MATLAB, chacunes
+avec une valeur de $E$ différente pour qu'elles soient uniformément réparties
+dans la plage permise. Pour chaque système d'équation, les coefficients du
+polynôme sont résolus. Afin d'être bref seul la résolution pour le $E$ choisi
+est montrée puisque la démarche est toujours la même (le choix sera justifié
+plus tard):
 
 \begin{align}
 	F(x) &= a_0 + a_1 x + a_2 x^2 + a_3 x^3 + a_4 x^4\\
@@ -31,7 +31,7 @@ justifié plus tard):
 Plusieurs équations polynomiales sont donc trouvées selon la hauteur du point
 $E$ (Annexe \ref{fig:01-trajectories}). Toutefois, il est requis que la pente
 finale soit horizontale ou presque. Cela correspond à la fonction polynomiale
-pour laquelle la dérivée est la plus près de 0 à $x=25$. Ici cela correspond à
+pour laquelle la dérivée est la plus près de 0 à $x=25$. Ici, cela correspond à
 $E_y=12.5$m (pente de $-0.0260$).
 
 Puisqu'il est question ici d'une interpolation et non d'une régression, la
