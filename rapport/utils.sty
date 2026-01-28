@@ -8,10 +8,18 @@
    \tabularx{\columnwidth}{>{$}l<{$} @{${}\colon{}$} >{\raggedright\arraybackslash}X}}
   {\endtabularx\par\vspace{\belowdisplayskip}}
 
-\let\oldtableofcontents\tableofcontents
-\renewcommand{\tableofcontents}{%
+% \let\oldtableofcontents\tableofcontents
+% \renewcommand{\tableofcontents}{%
+%   \pagenumbering{gobble}%
+%   \oldtableofcontents
+%   \clearpage
+%   \pagenumbering{arabic}%
+%   \setcounter{page}{1}%
+% }
+
+\newcommand{\contents}[1]{
   \pagenumbering{gobble}%
-  \oldtableofcontents
+	#1
   \clearpage
   \pagenumbering{arabic}%
   \setcounter{page}{1}%
