@@ -5,7 +5,6 @@ close all
 %% UI Setup (defaults and shit)
 run('99-utils.m');
 
-
 %% Global values
 gravity         = 9.81; % m/s^2
 participantMass = 80;   % kg
@@ -24,7 +23,7 @@ trampFallHeight   = 5;    % m hauteur du participant avant de tomber sur la tram
 trampSafetyMargin = 0.5;  % 50 cm need to be added to the total of the trampoline height.
 
 %% Bassin values
-poolFallHeight   = 10;   % meters. Hauteur initial entre le participant et la hauteur de l'eau.
+poolFallHeight   = 10;   % m. Hauteur initial entre le participant et la hauteur de l'eau.
 hydroCoefficient = 47;   % kg/m; b.
 buoyancyConstant = 0.95; % flotability constant. k_f (slightly negative)
 safeSpeedFactor  = 1.10; % Pourcentage de la vitesse d'equilibre qui est permit de frappe le fond de la piscine
