@@ -38,7 +38,7 @@ for k = 1:numel(E_range)
     height     = polyval(p, x_plot);
     dp         = polyder(p);
     derivative = polyval(dp, x_plot);
-	angle      = atan(derivative);
+	  angle      = atan(derivative);
 
     % Store end derivative (at E_x)
     end_derivatives(k) = polyval(dp, E_x);
@@ -99,14 +99,26 @@ end
 legend(legend_labels, 'location', 'northeast');
 
 % Add two separate text objects - one above the other
-text1 = sprintf('Polynomial for E=%.2f:', optimal_E);
-text2 = sprintf('y=%.6f+%.6fx+%.6fx^2+%.6fx^3+%.6fx^4', ...
-               optimal_coeffs(5), optimal_coeffs(4), optimal_coeffs(3), optimal_coeffs(2), optimal_coeffs(1));
+text1 = sprintf('Polynomiale avec E=%.2f:', optimal_E);
+text2 = sprintf('F(x)=%.6f+%.6fx+%.6fx^2+%.6fx^3+%.6fx^4', ...
+			    optimal_coeffs(5),
+					optimal_coeffs(4),
+					optimal_coeffs(3),
+					optimal_coeffs(2),
+					optimal_coeffs(1));
 
-text(0.02, 0.08, text1, 'Units', 'normalized', 'VerticalAlignment', 'bottom', ...
-     'BackgroundColor', 'white', 'EdgeColor', 'black', 'FontSize', 8);
-text(0.02, 0.02, text2, 'Units', 'normalized', 'VerticalAlignment', 'bottom', ...
-     'BackgroundColor', 'white', 'EdgeColor', 'black', 'FontSize', 8);
+text(0.02, 0.04, text1,
+  'Units', 'normalized',
+	'VerticalAlignment', 'bottom',
+  'BackgroundColor', 'white',
+	'EdgeColor', 'black',
+	'FontSize', 12);
+text(0.02, 0.02, text2,
+  'Units', 'normalized',
+	'VerticalAlignment', 'bottom',
+  'BackgroundColor', 'white',
+	'EdgeColor', 'black',
+	'FontSize', 12);
 save_plot(gcf, '01-trajectories');
 
 figure(2);

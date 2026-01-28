@@ -13,12 +13,19 @@ M = [ones(length(x_valve),1), x_valve, x_valve.^2];  % 11x3 matrix
 
 valve_coeffs = (inv(M.'*M) * M.') * y_valve;  % 3x1 coefficients
 
+% Linear approximation using the same mathematical process
+M_linear = [ones(length(x_valve),1), x_valve];  % 11x2 matrix for linear fit
+
+valve_coeffs_linear = (inv(M_linear.'*M_linear) * M_linear.') * y_valve;  % 2x1 coefficients
+
 % Dense x values for smooth curve
 x_fit = linspace(min(x_valve), max(x_valve), 1000);   % points between min and max of x
 y_fit = valve_coeffs(1) + valve_coeffs(2)*x_fit + valve_coeffs(3)*x_fit.^2;    % evaluate quadratic
+y_fit_linear = valve_coeffs_linear(1) + valve_coeffs_linear(2)*x_fit;          % evaluate linear
 
-% Predicted values from fitted quadratic
+% Predicted values from fitted curves
 y_fit_points = valve_coeffs(1) + valve_coeffs(2)*x_valve + valve_coeffs(3)*x_valve.^2;
+y_fit_points_linear = valve_coeffs_linear(1) + valve_coeffs_linear(2)*x_valve;
 
 % Residual sum of squares
 SS_res = sum((y_valve - y_fit_points).^2);
@@ -32,6 +39,10 @@ R2 = 1 - SS_res / SS_tot;
 % RMS (Root Mean Square) error
 residuals = y_valve - y_fit_points;
 RMS = sqrt(mean(residuals.^2));
+
+% Linear approximation RMS error
+residuals_linear = y_valve - y_fit_points_linear;
+RMS_linear = sqrt(mean(residuals_linear.^2));
 
 % Plot
 figure;
@@ -53,14 +64,28 @@ plot(x_fit, y_fit, '-',
   'Color', palette{2},
 	'LineWidth', 2);
 
+% Linear approximation curve
+plot(x_fit, y_fit_linear, '-',
+  'Color', palette{3},
+	'LineWidth', 2);
+
 % Add legend (defaults to northeast automatically)
-legend('Données expérimentales', 'Approximation quadratique');
+legend('Données expérimentales',
+  'Approximation quadratique F(x)',
+	'Approximation linéaire L(x)');
 
 % Add function equation with Unicode symbols (units now default to normalized)
 text(0.95, 0.85, sprintf('F(x) = %.4f + %.4fx + %.4fx²', valve_coeffs(1), valve_coeffs(2), valve_coeffs(3)), ...
     'HorizontalAlignment', 'right');
 
 text(0.95, 0.82, sprintf('RMS = %.4f', RMS), ...
+    'HorizontalAlignment', 'right');
+
+% Linear approximation equation and RMS
+text(0.95, 0.75, sprintf('L(x) = %.4f + %.4fx', valve_coeffs_linear(1), valve_coeffs_linear(2)), ...
+    'HorizontalAlignment', 'right');
+
+text(0.95, 0.72, sprintf('RMS linéaire = %.4f', RMS_linear), ...
     'HorizontalAlignment', 'right');
 
 axis tight;
