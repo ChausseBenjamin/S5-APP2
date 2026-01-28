@@ -28,8 +28,63 @@ $$
 $$
 Toutes les variables de cette équation sont connue, sauf la vitesse initial du participant, qui est donnée par le calcul de la trajectoire. Hors, une fois tout mis dans l'équation on obtient la vitesse final du participant et du ballon:
 $$
-V_f\approx5.6\text{m/s}
+V_{pf}\approx5.6\text{m/s}
 $$
 
 \subsection{Cas ou le ballon n'est pas attrapé}
-Le coefficient de restitution choisi est 0.8. Simplement car plus il est grand, plus le participant pert de la vitesse.
+Le coefficient de restitution choisi est 0.8. Simplement car plus il est grand
+plus le participant pert de la vitesse. Il n'est pas possible de simplifier
+les vitesses comme dans le cas précédent. Hors, la démarche est identique,
+mais la formule obtenue est plus lourde:
+$$
+m_pV_{pi}+m_bV_{bi}=m_pV_{pf}+m_bV_{bf}
+$$
+$$
+m_pV_{pi}+m_bV_{bi}=m_pV_{pf}+m_b\cdot(-e(V_{bi}-V_{pi})+V_{pf})
+$$
+$$
+m_pV_{pi}+m_bV_{bi}=m_pV_{pf}-m_be(V_{bi}-V_{pi})+m_bV_{pf}
+$$
+$$
+m_pV_{pi}+m_bV_{bi}+m_be(V_{bi}-V_{pi})=m_pV_{pf}+m_bV_{pf}
+$$
+$$
+m_pV_{pi}+m_b(V_{bi}+e(V_{bi}-V_{pi}))=V_{pf}(m_p+m_b)
+$$
+$$
+\frac{m_pV_{pi}+m_b(V_{bi}+e(V_{bi}-V_{pi}))}{m_p+m_b}=V_{pf}
+$$
+Hors, avec la vitesse initial du participant restand la même que le cas
+précédant, et le reste des variables étant fournis par le guide étudiant, la
+vitesse final du participant s'il n'attrape pas le ballon est la suivante:
+$$
+v_{pf}\approx5.07\text{m/s}
+$$
+
+\subsection{La minuterie}
+La vitesse du participant dans les deux cas, étant calculé, il ne reste que la
+minuterie. Hors, la longueur de la trappe étant connue (3m), le temps pour la
+est donnée par:
+$$
+\frac{L_T}{V_{pf}}=\text{ secondes}
+$$
+Ce qui donne ceci pour les deux cas:
+$$
+T_{\text{attrapé}}\approx0.54\text{ secondes}
+$$
+$$
+T_{\text{pas attrapé}}\approx0.59\text{ secondes}
+$$
+Hors, une marge de sécurité de 0.02 secondes est demandé, ce qui donne les
+temps sécuritaire suivants:
+$$
+T_{\text{attrapé}}\approx0.55\text{ secondes}
+$$
+$$
+T_{\text{pas attrapé}}\approx0.57\text{ secondes}
+$$
+Hors, afin d'obtenir la réponse la plus sécuritaire, le juste millieu des
+deux temps est choisi, par l'équation suivante:
+$$
+T_m = \frac{T_{ba}+T_{bpa}}{2}\approx0.56\text{ secondes}
+$$
