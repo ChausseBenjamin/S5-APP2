@@ -1,0 +1,35 @@
+Pour la minuterie, il faut d'abord trouvé la vitesse du participant après sa collision avec le ballon, dans deux cas.
+Une collision plastique lorsqu'il est attrapé par le participant, et une collision semi-plastique lorsqu'il n'est pas attrapé.
+Hors, les équations du coefficients de restitution et de l'énergie total du systèmes restent les mêmes pour les deux cas. Les voici, en fonction
+du participant (p) et ballon (b)
+
+\begin{align}
+e=\frac{V_{pf}-V_{bf}}{V_{bi}-{V_{pi}}}
+\end{align}
+\begin{align}
+m_pV_{pi}+m_bV_{bi}=m_pV_{pf}+m_bV_{bf}
+\end{align}
+
+\subsection{Cas ou le ballon est attrapé}
+Dans ce cas-ci, la collision est plastique. Donc le coefficient de restitution est 0.
+\begin{align}
+0=\frac{V_{pf}-V_{bf}}{V_{bi}-{V_{pi}}}
+\end{align}
+Vue que la collision est plastique, le participant et le ballon sont obligé d'avoir la même vitesse final. Le participant a attrapé le ballon après tout.
+Donc avec l'équation de l'énergie posé au début de cette section;
+$$
+m_pV_{pi}+m_bV_{bi}=m_pV_{f}+m_bV_{f}
+$$
+$$
+m_pV_{pi}+m_bV_{bi}=(m_p+m_b)V_{f}
+$$
+$$
+\frac{m_pV_{pi}+m_bV_{bi}}{m_p+m_b}=V_{f}
+$$
+Toutes les variables de cette équation sont connue, sauf la vitesse initial du participant, qui est donnée par le calcul de la trajectoire. Hors, une fois tout mis dans l'équation on obtient la vitesse final du participant et du ballon:
+$$
+V_f\approx5.6\text{m/s}
+$$
+
+\subsection{Cas ou le ballon n'est pas attrapé}
+Le coefficient de restitution choisi est 0.8. Simplement car plus il est grand, plus le participant pert de la vitesse.
