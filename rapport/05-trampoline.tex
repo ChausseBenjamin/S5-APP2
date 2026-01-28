@@ -3,35 +3,35 @@ d'une hauteur de 5 mètres sur un coussin (ressort) d'une raideur connue.
 L'énergie total de se système peut donc se résumé en l'énergie potentiel de la
 masse à 5 mètres, l'énergie potentiel lors de l'ammortissement dans le ressort
 et l'énergie du ressort.
-$$
+\begin{align}
 E_r=E_{pg}+E_{pgr}
-$$
+\end{align}
 L'énergie du ressort est donnée à une distance de déflexion. Cette distance est
 inconnue, mais sera la même que celle pour l'énergie potentielle exercé par le 
 participant lors de son ammorse dans le ballon. Donc, l'équation d'énergie est:
-$$
+\begin{align}
 mgh_0+mgx=\frac{1}{2}k_cx^2
-$$
+\end{align}
 Avec un peu de misère, on s'appercois que c'est un polynôme d'ordre 2 s'il égal
 0. Hors, ceci est utile car l'équation quadratique peut êre utilisé pour trouvé
 les zéros.
-$$
+\begin{align}
 mgh_0+mgx-\frac{1}{2}k_cx^2=0
-$$
+\end{align}
 Les coefficients sont:
-$$a=mgh$$
-$$b=mg$$
-$$c=-\frac{1}{2}k_c$$
+\begin{align}
+a&=mgh \\
+b&=mg \\
+c&=-\frac{1}{2}k_c
+\end{align}
 Remplacé dans l'équation quadratique, on obtient ceci:
-$$
-x=\frac{-b(+-)\sqrt{b^2-4ac}}{2a}
-$$
-$$
-x=\frac{-mg(+-)\sqrt{(mg)^2-4(mgh_0)(-\frac{1}{2}k_c)}}{2(mgh_0)}
-$$
+\begin{align}
+x&=\frac{-b(+-)\sqrt{b^2-4ac}}{2a} \\
+x&=\frac{-mg(+-)\sqrt{(mg)^2-4(mgh_0)(-\frac{1}{2}k_c)}}{2(mgh_0)}
+\end{align}
 Une fois calculé, ou exécuté avec la fonction "roots" de MATLAB, on obtient:
-$$
+\begin{align}
 \Delta h\approx1.4\text{m}
-$$
+\end{align}
 Le coussin doit donc être plus grand que 1.4 mètres. Sans aucun fondement, la
 hauteur total du coussin est suggérée à $2$ mètres.
