@@ -21,7 +21,7 @@ plot(x_plot, friction,
 grid on;
 xlabel('x (m)');
 ylabel('cos(θ)');
-title(sprintf('Friction Force Along Selected Trajectory (E = %.2f)', E_range(best_idx)));
+% title(sprintf('Friction Force Along Selected Trajectory (E = %.2f)', E_range(best_idx)));
 save_plot(gcf, '01-friction');
 
 mu_candidates = [ ...
@@ -139,7 +139,7 @@ h2 = plot(NaN, NaN, '--', 'LineWidth', 1.5, 'Color', [1.0, 0.6, 0.0], 'DisplayNa
 grid on;
 xlabel('x (m)');
 ylabel('Speed (m/s)');
-title('Speed vs Position for Different Friction Coefficients');
+% title('Speed vs Position for Different Friction Coefficients');
 legend('show', 'Location', 'northeast');
 save_plot(gcf, '01-speeds');
 
@@ -190,7 +190,7 @@ figure;
 hold on;
 grid on;
 
-title('Comparaison des vitesses selon l''incertitude du coefficient de frottement', 'FontSize', 17);
+% title('Comparaison des vitesses selon l''incertitude du coefficient de frottement', 'FontSize', 17);
 xlabel('Distance horizontale (m)', 'FontSize', 15);
 ylabel('Vitesse (m/s)', 'FontSize', 15);
 
