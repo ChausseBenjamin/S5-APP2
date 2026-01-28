@@ -5,10 +5,10 @@ clear all;
 close all;
 
 % - Fetch les variables de configurations
-run('00-global.m');
+run('01-vitesse.m');
 
 % - Variables pour design
-participantSpeed = 22.5/3.6; % m/s
+participantSpeed = final_speed_target; % m/s
 restitutionCoefficient = 0.8;    % Quand il n'attrape pas la balle
 
 % - Calculs des vitesses du participant apr¨¨s impact

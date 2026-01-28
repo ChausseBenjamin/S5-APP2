@@ -8,6 +8,15 @@
    \tabularx{\columnwidth}{>{$}l<{$} @{${}\colon{}$} >{\raggedright\arraybackslash}X}}
   {\endtabularx\par\vspace{\belowdisplayskip}}
 
+\let\oldtableofcontents\tableofcontents
+\renewcommand{\tableofcontents}{%
+  \pagenumbering{gobble}%
+  \oldtableofcontents
+  \clearpage
+  \pagenumbering{arabic}%
+  \setcounter{page}{1}%
+}
+
 \newcommand{\todo}[1]{\begin{color}{Red}\textbf{TODO:} #1\end{color}}
 \newcommand{\note}[1]{\begin{color}{Orange}\textbf{NOTE:} #1\end{color}}
 \newcommand{\fixme}[1]{\begin{color}{Fuchsia}\textbf{FIXME:} #1\end{color}}

@@ -1,4 +1,7 @@
-run('00-global.m')
+% Import guard - ensure global variables are loaded
+if ~exist('first_points', 'var') || ~exist('E_range', 'var')
+    run('00-global.m');
+end
 
 valve_pcnt     = valve_dataset(:,1);
 valve_friction = valve_dataset(:,2);
@@ -35,7 +38,7 @@ figure;
 hold on;
 grid on;
 
-title('Friction selon l''ouverture de la valve', 'FontSize', 17);
+% title('Friction selon l''ouverture de la valve', 'FontSize', 17);
 xlabel('Ouverture de la valve (%)', 'FontSize', 15);
 ylabel('Coefficient de frottement μf', 'FontSize', 15);
 
@@ -71,31 +74,31 @@ function valve_opening = find_valve_opening(valve_coeffs, target_mu)
     % Find valve opening percentage for a given friction coefficient
     % Solves the quadratic equation: target_mu = a + b*x + c*x^2
     % Rearranged to: c*x^2 + b*x + (a - target_mu) = 0
-    
+
     a = valve_coeffs(1);
     b = valve_coeffs(2);
     c = valve_coeffs(3);
-    
+
     % Quadratic formula coefficients for c*x^2 + b*x + (a - target_mu) = 0
     A = c;
     B = b;
     C = a - target_mu;
-    
+
     % Solve quadratic equation
     discriminant = B^2 - 4*A*C;
-    
+
     if discriminant < 0
         error('No real solution exists for μ = %.4f', target_mu);
     end
-    
+
     % Two possible solutions
     x1 = (-B + sqrt(discriminant)) / (2*A);
     x2 = (-B - sqrt(discriminant)) / (2*A);
-    
+
     % Choose the solution within the valid range [0, 100]
     solutions = [x1, x2];
     valid_solutions = solutions(solutions >= 0 & solutions <= 100);
-    
+
     if isempty(valid_solutions)
         warning('No solution within valid range [0, 100%] for μ = %.4f. Closest solutions: %.2f%%, %.2f%%', target_mu, x1, x2);
         % Return the closest solution to the valid range
@@ -111,8 +114,7 @@ function valve_opening = find_valve_opening(valve_coeffs, target_mu)
         [~, idx] = min(abs(valid_solutions - 50));
         valve_opening = valid_solutions(idx);
     end
-    
-    fprintf('For μ = %.4f, valve opening = %.2f%%\n', target_mu, valve_opening);
+
 end
 
 function [mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, x_opening, y_valve, x_valve)
@@ -137,9 +139,4 @@ function [mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, x_opening,
     mu_min = mu_predicted - uncertainty;
     mu_max = mu_predicted + uncertainty;
 
-    % Display results
-    fprintf('Valve opening %.2f%%:\n', x_opening);
-    fprintf('  Predicted μ = %.4f\n', mu_predicted);
-    fprintf('  Range: %.4f ≤ μ ≤ %.4f\n', mu_min, mu_max);
-    fprintf('  Uncertainty: ±%.4f (based on RMS error = %.4f)\n', uncertainty, rms_error);
 end

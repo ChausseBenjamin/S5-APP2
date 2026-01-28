@@ -17,6 +17,10 @@ slopes       = zeros(length(x_plot), numel(E_range)); % Derivative data
 angles       = zeros(length(x_plot), numel(E_range)); % Angles in degrees
 friction     = zeros(length(x_plot), numel(E_range));
 
+% Storage for finding E with derivative closest to 0
+end_derivatives = zeros(numel(E_range), 1);
+polynomial_coeffs = cell(numel(E_range), 1);
+
 % Generate a unique position and slope curve for each
 % possible E height
 for k = 1:numel(E_range)
@@ -27,11 +31,17 @@ for k = 1:numel(E_range)
     % Polynomial through all points (degree = N-1)
     p = polyfit(x, y, numel(x)-1);
 
+    % Store polynomial coefficients
+    polynomial_coeffs{k} = p;
+
     % Evaluate data
     height     = polyval(p, x_plot);
     dp         = polyder(p);
     derivative = polyval(dp, x_plot);
-		angle      = atan(derivative);
+	angle      = atan(derivative);
+
+    % Store end derivative (at E_x)
+    end_derivatives(k) = polyval(dp, E_x);
 
     % Store data
     trajectories(:, k) = height;
@@ -58,6 +68,11 @@ for k = 1:numel(E_range)
 	  'LineWidth', 1.2);
 end
 
+% Find E with end derivative closest to 0
+[~, closest_idx] = min(abs(end_derivatives));
+optimal_E = E_range(closest_idx);
+optimal_coeffs = polynomial_coeffs{closest_idx};
+
 % Add endpoint circles after the loop (so they don't affect legend)
 figure(1);
 for k = 1:numel(E_range)
@@ -72,7 +87,7 @@ figure(1);
 grid on;
 xlabel('x (m)');
 ylabel('y (m)');
-title('Polynomial trajectories');
+% title('Polynomial trajectories');
 plot(x_base, y_base, 'o',
   'LineWidth', 2,
   'Color', palette{7},
@@ -82,13 +97,23 @@ for i = 1:numel(E_range)
     legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
 end
 legend(legend_labels, 'location', 'northeast');
+
+% Add two separate text objects - one above the other
+text1 = sprintf('Polynomial for E=%.2f:', optimal_E);
+text2 = sprintf('y=%.6f+%.6fx+%.6fx^2+%.6fx^3+%.6fx^4', ...
+               optimal_coeffs(5), optimal_coeffs(4), optimal_coeffs(3), optimal_coeffs(2), optimal_coeffs(1));
+
+text(0.02, 0.08, text1, 'Units', 'normalized', 'VerticalAlignment', 'bottom', ...
+     'BackgroundColor', 'white', 'EdgeColor', 'black', 'FontSize', 8);
+text(0.02, 0.02, text2, 'Units', 'normalized', 'VerticalAlignment', 'bottom', ...
+     'BackgroundColor', 'white', 'EdgeColor', 'black', 'FontSize', 8);
 save_plot(gcf, '01-trajectories');
 
 figure(2);
 grid on;
 xlabel('x (m)');
 ylabel('𝑑𝑦/𝑑𝑥');
-title('Derivatives of trajectories');
+% title('Derivatives of trajectories');
 legend_labels = cell(numel(E_range), 1);
 for i = 1:numel(E_range)
     legend_labels{i} = sprintf('E = %.1f m ', E_range(i));
@@ -100,7 +125,7 @@ figure(3);
 grid on;
 xlabel('x (m)');
 ylabel('slope (°)');
-title('Slope Angle');
+% title('Slope Angle');
 legend_labels = cell(numel(E_range), 1);
 for i = 1:numel(E_range)
     legend_labels{i} = sprintf('E = %.1f m ', E_range(i));

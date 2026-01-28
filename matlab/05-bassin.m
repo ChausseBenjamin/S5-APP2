@@ -1,4 +1,4 @@
-%% - Piscine a vague de valcartier - La meilleur m¨¦thode que l'APP.
+%% - Piscine a vague de valcartier - La meilleur mï¿½ï¿½thode que l'APP.
 clc;
 clear all;
 close all;
@@ -47,11 +47,7 @@ ylabel("Profondeur (m)");
 xlabel("Vitesse (m/s)");
 title("Vitesse en fonction de la profondeur APP");
 grid on;
-legend('show', 'Location', 'best');
-hold off;
-
-
-
+legend('show', 'Location', 'northeast');
 
 
 
@@ -84,7 +80,7 @@ for i = 1:sizeOfTime-1
         acceleration(i) = -(1 - buoyancyConstant)*gravity + (hydroCoefficient/totalMass)*(speed(i)*speed(i));
     end
 
-    % - Int¨¦gration pour obtenir la vitesse et la position
+    % - Intï¿½ï¿½gration pour obtenir la vitesse et la position
     speed(i+1) = speed(i) + acceleration(i)*timeIncrements;
     position(i+1) = position(i) + speed(i+1)*timeIncrements;
 
@@ -134,5 +130,5 @@ end
 % - Displays
 disp('')
 disp(["vitesse limite du participant dans l'eau: v_e: ", num2str(speedEquilibrium), 'm/s'])
-disp(["profondeur s¨¦curitaire du bassin d'eau: (APP)  ", num2str(depth), ' metres'])
-%disp(["profondeur s¨¦curitaire simule:                 ", num2str(simulatedSafeDepth), ' metres'])
+disp(["profondeur sï¿½ï¿½curitaire du bassin d'eau: (APP)  ", num2str(depth), ' metres'])
+%disp(["profondeur sï¿½ï¿½curitaire simule:                 ", num2str(simulatedSafeDepth), ' metres'])

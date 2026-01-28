@@ -41,8 +41,8 @@ first_points = [
 ];
 
 % Last point of the trajectory (with multiple possibly y values)
-E_x     = 25;         % m
-E_range = [10:0.5:15] % m
+E_x     = 25;          % m
+E_range = [10:0.5:15]; % m
 
 initialHeight = first_points(1,2);
 
