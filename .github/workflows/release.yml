@@ -36,6 +36,19 @@ jobs:
       - name: Compile LaTeX document with Docker
         run: |
           echo "Compiling LaTeX document using Docker container..."
+          # First pass to generate .toc file
+          docker run --rm \
+            -v "${{ github.workspace }}:/tex" \
+            ${{ env.DOCKER_IMAGE }} \
+            ${{ env.LATEX_DIR }}/${{ env.LATEX_MAIN }} || true
+          
+          # Second pass to include table of contents
+          docker run --rm \
+            -v "${{ github.workspace }}:/tex" \
+            ${{ env.DOCKER_IMAGE }} \
+            ${{ env.LATEX_DIR }}/${{ env.LATEX_MAIN }} || true
+          
+          # Third pass for final table of contents consistency
           docker run --rm \
             -v "${{ github.workspace }}:/tex" \
             ${{ env.DOCKER_IMAGE }} \
