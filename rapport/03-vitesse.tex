@@ -1,0 +1,45 @@
+Enfin, pour la vitesse tout au long de la glissade, les équation de la
+conservation de l'énergie sont utilisé ce qui nous permet de décrire notre
+système comme suit:
+
+\begin{align}
+\underbrace{mgy_0}_{\textrm{énergie totale}} =
+  \underbrace{mgF(x)}_{\textrm{énergie potentiel à } x} +
+	\underbrace{\frac{1}{2}m[v(x)]^2}_{\textrm{énergie cinétique à }x} +
+	\underbrace{\int_0^x{F_f(x)x} \d{x}}_{\textrm{travail cummulatif de la friction
+	à }x}
+\end{align}
+
+Il est intéressant de remarquer que la pente de la trajectoire (dérivée) trouvée
+précédement permet d'établir un angle en radiant de la pente selon $x$ comme
+suit:
+\begin{equation}
+	\theta(x) = \arctan{\left( F^\prime(x) \right)}
+\end{equation}
+
+Cela permet d'exprimer la force de frottement selon x (celle-ci étant définie
+comme $\mu_f mg\cos{\theta}$). Puis, en isolant la vitesse nous arrivons à
+l'équation suivante:
+
+\begin{equation}
+	v(x) = \sqrt{
+	  2g\left( y_0 - F(x) - \mu_f \int_0^x{cos{(\arctan{(F^\prime(x))})}x \dx} \right)
+	}
+\end{equation}
+
+En utilisant MATLAB pour re-calculer l'intégrale à chaque valeur de $x$ le long
+de la trajectoire, il est possible de tracer plusieur courbes en posant des
+des $\mu_f$ réparties dans les plage que la valve permet.
+
+
+
+
+
+
+
+
+
+
+
+
+
