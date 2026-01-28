@@ -6,6 +6,8 @@ run('01-vitesse.m');
 run('02-valve.m');
 fprintf("\n\n\n");
 
+fprintf("Pente final du E choisi: %.4f\n", final_slopes(best_idx));
+
 fprintf("E_y choisi: %.2f\n", trajectory(end));
 fprintf("Coefficients de friction choisi: %.2f\n", chosen_mu);
 

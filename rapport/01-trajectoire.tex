@@ -1,12 +1,12 @@
 La glissade doit absolument passer par 4 points fixes ($A$,$B$,$C$,$D$) et un
 point dont la hauteur est variable entre 10 et 15 mètres ($E$). Si
-les coordonés exactes du point $E$ étaient connues à l'avance, créer un fonction
+les coordonées exactes du point $E$ étaient connues à l'avance, créer un fonction
 polynomiale passant par les 5 points pourrait être résolue en utilisant les
-coordonés pour développer un système d'équations avec 5 équations et 4 inconnus
-(polynomiale d'ordre 3). Plusieures suppositions sont émises dans Matlab,
+coordonées pour développer un système d'équations avec 5 équations et 5 inconnus
+(polynôme d'ordre 4). Plusieurs suppositions sont émises dans MATLAB,
 chacunes avec une valeur de $E$ différentes et uniformément réparties dans la
-plage permise. Pour chaque système d'équation, les coefficients de la
-polynomiale sont résolues. Afin d'être bref seul la résolution pour le $E$
+plage permise. Pour chaque système d'équation, les coefficients du
+polynôme sont résolues. Afin d'être bref seul la résolution pour le $E$
 choisi est montrée puisque la démarche est toujours la même (le choix sera
 justifié plus tard):
 
@@ -28,12 +28,13 @@ justifié plus tard):
 	F(x) &= 30.000000 -3.910623 x + 0.525220 x^2 -0.027685 x^3 + 0.000473 x^4
 \end{align}
 
-Plusieures équations polynomiales sont donc trouvées selon la hauteur du point
+Plusieurs équations polynomiales sont donc trouvées selon la hauteur du point
 $E$ (Annexe \ref{fig:01-trajectories}). Toutefois, il est requis que la pente
-finale soit horizontale ou presque. En effectuant la dérivée de chacune des
-polynomiales obtenu, cela correspond à la polynomiale pour laquelle la
-dérivée est le plus près de 0 à $x=25$, ce qui correspond à $E_y=12.5$m.
+finale soit horizontale ou presque. Cela correspond à la fonction polynomiale
+pour laquelle la dérivée est la plus près de 0 à $x=25$. Ici cela correspond à
+$E_y=12.5$m (pente de $-0.0260$).
 
-\todo{Explain and/or prove why RMS is zero (duh, we force a solution for all
-points)} \\
+Puisqu'il est question ici d'une interpolation et non d'une régression, la
+courbe passe par tout les points et il n'y a pas place pour des erreur. Autrement
+dit, le RMS est de 0 par définition.\\
 

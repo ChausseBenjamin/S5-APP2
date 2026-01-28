@@ -1,71 +1,60 @@
-Enfin, pour la vitesse tout au long de la glissade, les équation de la
-conservation de l'énergie sont utilisé ce qui nous permet de décrire notre
+Enfin, pour la vitesse tout au long de la glissade, les équations de la
+conservation de l'énergie sont utilisées, ce qui nous permet de décrire notre
 système comme suit:
 
 \begin{align}
-\underbrace{mgy_0}_{\textrm{énergie totale}} =
-  \underbrace{mgF(x)}_{\textrm{énergie potentiel à } x} +
-	\underbrace{\frac{1}{2}m[v(x)]^2}_{\textrm{énergie cinétique à }x} +
-	\underbrace{\int_0^x{F_f(x)x} \d{x}}_{\textrm{travail cummulatif de la friction
-	à }x}
+\underbrace{m g y_0}_{\textrm{énergie totale}} =
+  \underbrace{m g F(x)}_{\textrm{énergie potentielle à } x} +
+  \underbrace{\frac{1}{2} m [v(x)]^2}_{\textrm{énergie cinétique à } x} +
+  \underbrace{\int_0^x F_f(x) \, ds}_{\textrm{travail cumulatif de la friction à } x}
 \end{align}
 
-Il est intéressant de remarquer que la pente de la trajectoire (dérivée) trouvée
-précédement permet d'établir un angle en radiant de la pente selon $x$ comme
-suit:
-\begin{equation}
-	\theta(x) = \arctan{\left( F^\prime(x) \right)}
-\end{equation}
-
-Cela permet d'exprimer la force de frottement selon x (celle-ci étant définie
-comme $\mu_f mg\cos{\theta}$). Puis, en isolant la vitesse nous arrivons à
-l'équation suivante:
+La trajectoire obtenue permet d'établir un angle de pente en radians selon $x$:
 
 \begin{equation}
-	v(x) = \sqrt{ 2g\left(
-			  y_0
-			- F(x)
-			- \mu_f \int_0^x{cos{(\arctan{(F^\prime(x))})}x \dx}
-		\right)}
+\theta(x) = \arctan(F'(x))
 \end{equation}
 
-En utilisant MATLAB pour re-calculer l'intégrale à chaque valeur de $x$ le long
+La force de frottement le long de la trajectoire est donnée par $F_f(x) = \mu_f
+m g \cos\theta(x)$, et le travail de frottement s'écrit correctement en fonction
+de l'arc le long de la trajectoire:
+
+\begin{equation}
+\int_0^x F_f(x) \, ds = \mu_f m g \int_0^x \cos\theta(x) \sqrt{1 + [F'(x)]^2} \, dx
+\end{equation}
+
+Sous l’hypothèse que la force normale est exactement $mg\cos\theta(x)$ et que le
+frottement agit tangentiellement à la trajectoire, le facteur $\sqrt{1 +
+[F'(x)]^2}$ du déplacement le long de la pente se simplifie avec
+$\cos\theta(x)$, ce qui conduit à:
+
+\begin{equation}
+\int_0^x F_f(x) \, ds = \mu_f m g \, x
+\end{equation}
+
+c’est-à-dire que le travail de frottement dépend uniquement de la distance
+horizontale parcourue.
+
+La vitesse peut alors être isolée:
+\begin{equation}
+v(x) = \sqrt{2 g \left( y_0 - F(x) - \mu_f \, x \right)}
+\end{equation}
+
+En utilisant MATLAB pour recalculer l'intégrale à chaque valeur de $x$ le long
 de la trajectoire, il est possible de tracer plusieurs courbes en posant des
-des $\mu_f$ réparties dans les plage que la valve permet. Lors de la génération
-des courbes, il devient apparent que les $\mu_f$ aux extrêmes donnent des
-courbes dont la vitesse finale est hors des limites acceptables (20-25 km/h).
-La figure \ref{fig:01-speeds} ne montre que des valeurs de $\mu_f$ permettant
-des vitesses finales plus près de la plage d'intérêt.
+$\mu_f$ répartis dans la plage que la valve permet. Lors de la génération des
+courbes, il devient apparent que les $\mu_f$ aux extrêmes donnent des vitesses
+finales hors des limites acceptables (20-25 km/h). La figure \ref{fig:01-speeds}
+ne montre que des valeurs de $\mu_f$ permettant des vitesses finales proches de
+la plage d'intérêt.
 
-Un coefficient de friction de $0.62$ est choisi puisqu'il donne (parmi les
-trajectoires calculées) une vitesse finale qui est la plus près du centre de la
-plage ($22.5$ km/h). Cette décision est prise pour tenter d'accommoder l'erreur
-provenant de l'approximation tant vers le haut que vers le bas.
+Un coefficient de friction de $0.62$ est choisi puisqu'il donne, parmi les
+trajectoires calculées, une vitesse finale proche du centre de la plage (22.5
+km/h), ce qui permet d'accommoder les erreurs provenant de l'approximation.
 
-
-Ayant choisi un $\mu_f$, il ne reste plus qu'à déterminer qu'elle ouverture de
-valve est requise pour l'atteindre en isolant $x$ dans l'équation
-\ref{eq:valve-quad} et choisisant la racine où $x$ se situe entre 0 et 100
-(impossible d'ouvrir la valve à plus de 100 ou moins que 0). L'ouverture trouvée
-est de $33.19$. À cette ouverture, une variation de $\pm$RMS permet un
-coefficient de friction entre $0.6020$ et $0.6380$ ce qui est représenté à la
+Ayant choisi un $\mu_f$, il reste à déterminer quelle ouverture de valve permet
+de l'atteindre en isolant $x$ dans l'équation \ref{eq:valve-quad} et en
+choisissant la racine située entre 0 et 100 (plage physique de la valve).
+L'ouverture trouvée est de 33.19. À cette ouverture, une variation de $\pm$RMS
+permet un coefficient de friction entre 0.6020 et 0.6380, comme représenté à la
 figure \ref{fig:01-speed-comparison}.
-
-% E_y choisi: 12.50
-% Coefficients de friction choisi: 0.62
-% Erreur RMS de l'approximation de mu(%): 0.0180
-%         mu-: 0.6020,    mu+ 0.6380
-% Ouverture de la valve pour le mu choisi: 33.19
-% Vitesses finales:
-%         lower: 24.96    target: 22.55, upper: 19.85
-
-
-
-
-
-
-
-
-
-
-
