@@ -1,0 +1,94 @@
+Tout d'abord, il faut trouvé une vitesse à l'équilibre. C'est à dire, la
+vitesse à laquel le participant arrète de déaccéléré dans l'eau.
+Ce point est important car c'est lui le centre de la linéarisation.
+Hors, selon les coefficients données, la somme des forces est utilisé pour le
+calcul. En effet, l'accélération peut être mis à zéro une fois l'équation isolé.
+Par soucis du requis de 4 pages, les étapes d'isolations seront tous omises,
+bien que tous disponibles en format propre.
+\begin{align}
+ma&=k_fmg+bv^2-mg \\
+a&=g(k_f-1)+\frac{b}{m}v^2
+\end{align}
+
+Il est maintenant possible de trouvé la vitesse à l'équilibre:
+\begin{align}
+0&=g(k_f-1)+\frac{b}{m}v^2 \\
+v_e&\approx0.9137\text{ m/s}
+\end{align}
+
+À partir de l'équation donnée par le guide étudiant, il est possible de
+simplifié les vitesses et trouvé le terme à linéarisé:
+\begin{align}
+mv\frac{dv}{dt}&=mg(k_f-1)+bv^2 \\
+\frac{dv}{dz}&=\frac{1}{v}g(k_f-1)+\frac{bv}{m}
+\end{align}
+
+La série de Taylor au premier degrée (avec v) est ceci:
+\begin{align}
+f(v)=f(v_e)+(\frac{\partial f}{\partial v})_e(v-v_e)
+\end{align}
+
+Hors, $f(v_e)$ à été calculé plus haut, et donnais $0$. Il peut donc être
+enlevé. De plus, $(v-v_e)$ vas être remplacé par $\Delta v$. Il est
+maintenant possible de faire la dérivé évalué à e;
+\begin{align}
+f(v_e)&=\frac{g(k_f-1)}{v_e}+\frac{bv}{m} \\
+f(v_e)&=-\frac{g(k_f-1)}{v_e^2}+\frac{b}{m}
+\end{align}
+
+Mis dans l'équation de la série de Taylors;
+\begin{align}
+\frac{d\Delta v}{dz}=(-\frac{g(k_f-1)}{v_e^2}+\frac{b}{m})\Delta v
+\end{align}
+
+Afin de simplifié les prochaines démarches, une constante est mise pour évité
+de dupliqué des grosses parties d'équations, de tel que:
+\begin{align}
+\lambda &= -\frac{g(k_f-1)}{v_e^2} \\
+\lambda\Delta v&=\frac{d\Delta v}{dz}
+\end{align}
+
+Les termes semblable sont mis du même coté de l'équation:
+\begin{align}
+\frac{1}{\Delta v}d\Delta v=\lambda dz
+\end{align}
+
+les termes dérivées peuvent maintenant être intégrés afin d'obtenir un $z$:
+\begin{align}
+\int\frac{1}{\Delta v}d\Delta v&=\int\lambda dz \\
+\ln|\Delta v|&=\lambda z + C
+\end{align}
+
+Le logarithme $\ln$ peut être enlevé en mettant les termes sur des $e$. 
+\begin{align}
+\Delta v=e^Ce^{\lambda z}
+\end{align}
+
+La constante d'intégration $C$ est juste une condition initial. En effet la
+vitesses aux limites de l'intégral est connue. C'est la vitesse lors de
+l'impact avec l'eau et de la vitesse à l'équilibre. Voici l'équation une fois
+remplacé.
+\begin{align}
+\Delta v=\Delta v(0)e^{\lambda z}
+\end{align}
+
+Ne reste qu'a isolé $z$ de l'équation;
+\begin{align}
+\frac{1}{\lambda}\ln(\frac{\Delta v(z)}{\Delta v(0)})=z
+\end{align}
+
+Les deltas sont remplacé par leurs valeurs réelles, afin d'êtres mis dans MATLAB:
+\begin{align}
+\frac{1}{\lambda}\ln(\frac{v-v_e}{v_i-v_e})=z
+\end{align}
+
+La valeur de $z$ est recherché à $v=v_e*1.1\approx1$. et $v_i$ est la vitesse
+lors de la rentrée dans l'eau. Cette dernière est obtenue de cette façon; ou la
+hauteur est 10 mètres.
+\begin{align}
+E_p&=E_c \\
+mgh_0&=\frac{1}{2}mv^2
+\end{align}
+
+Donc, $v_i\approx14$m/s. Une fois mis dans l'équation plus haut, on obtient une
+profondeur de $z\approx4.2$ mètres.
