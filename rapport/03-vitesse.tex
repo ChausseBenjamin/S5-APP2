@@ -22,14 +22,20 @@ comme $\mu_f mg\cos{\theta}$). Puis, en isolant la vitesse nous arrivons à
 l'équation suivante:
 
 \begin{equation}
-	v(x) = \sqrt{
-	  2g\left( y_0 - F(x) - \mu_f \int_0^x{cos{(\arctan{(F^\prime(x))})}x \dx} \right)
-	}
+	v(x) = \sqrt{ 2g\left(
+			  y_0
+			- F(x)
+			- \mu_f \int_0^x{cos{(\arctan{(F^\prime(x))})}x \dx}
+		\right)}
 \end{equation}
 
 En utilisant MATLAB pour re-calculer l'intégrale à chaque valeur de $x$ le long
 de la trajectoire, il est possible de tracer plusieur courbes en posant des
-des $\mu_f$ réparties dans les plage que la valve permet.
+des $\mu_f$ réparties dans les plage que la valve permet. Lors de la génération
+des courbes, il devient apparent que les $\mu_f$ aux extrêmes donnent des
+courbes dont la vitesse finale est hors des limites acceptables (20-25 km/h).
+La figure \ref{fig:01-speeds} montre alors que des valeurs de $\mu_f$ permettant
+des vitesses finales plus près de la plage d'intérêt.
 
 
 
