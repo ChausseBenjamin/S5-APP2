@@ -30,12 +30,17 @@ l'équation suivante:
 \end{equation}
 
 En utilisant MATLAB pour re-calculer l'intégrale à chaque valeur de $x$ le long
-de la trajectoire, il est possible de tracer plusieur courbes en posant des
+de la trajectoire, il est possible de tracer plusieurs courbes en posant des
 des $\mu_f$ réparties dans les plage que la valve permet. Lors de la génération
 des courbes, il devient apparent que les $\mu_f$ aux extrêmes donnent des
 courbes dont la vitesse finale est hors des limites acceptables (20-25 km/h).
-La figure \ref{fig:01-speeds} montre alors que des valeurs de $\mu_f$ permettant
+La figure \ref{fig:01-speeds} ne montre que des valeurs de $\mu_f$ permettant
 des vitesses finales plus près de la plage d'intérêt.
+
+Un coefficient de friction de $0.62$ est choisi puisqu'il donne (parmi les
+trajectoires calculées) une vitesse finale qui est la plus près du centre de la
+plage ($22.5$ km/h). Cette décision est prise pour tenter d'accommoder l'erreur
+provenant de l'approximation tant vers le haut que vers le bas.
 
 
 
