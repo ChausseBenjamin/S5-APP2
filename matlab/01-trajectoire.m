@@ -15,7 +15,7 @@ x_plot       = linspace(min(x_base), E_x, 2501);      % x-axis resolution
 trajectories = zeros(length(x_plot), numel(E_range)); % Position data
 slopes       = zeros(length(x_plot), numel(E_range)); % Derivative data
 angles       = zeros(length(x_plot), numel(E_range)); % Angles in degrees
-friction     = zeros(length(x_plot), numel(E_range));
+friction     = zeros(length(x_plot), numel(E_range)); % (without mass as it's irrelevant)
 
 % Storage for finding E with derivative closest to 0
 end_derivatives = zeros(numel(E_range), 1);
@@ -24,26 +24,20 @@ polynomial_coeffs = cell(numel(E_range), 1);
 % Generate a unique position and slope curve for each
 % possible E height
 for k = 1:numel(E_range)
-    % Construct full point set
     x = [x_base; E_x];
     y = [y_base; E_range(k)];
 
-    % Polynomial through all points (degree = N-1)
     p = polyfit(x, y, numel(x)-1);
 
-    % Store polynomial coefficients
     polynomial_coeffs{k} = p;
 
-    % Evaluate data
     height     = polyval(p, x_plot);
     dp         = polyder(p);
     derivative = polyval(dp, x_plot);
-	  angle      = atan(derivative);
+    angle      = atan(derivative);
 
-    % Store end derivative (at E_x)
     end_derivatives(k) = polyval(dp, E_x);
 
-    % Store data
     trajectories(:, k) = height;
     slopes(:, k)       = derivative;
     angles(:, k)       = angle;
@@ -52,20 +46,20 @@ for k = 1:numel(E_range)
     figure(1);
     color_idx = mod(k-1, length(palette)) + 1;  % Cycle through colors
     plot(x_plot, height,
-		'Color', palette{color_idx},
-	  'LineWidth', 1.2);
+    'Color', palette{color_idx},
+    'LineWidth', 1.2);
 
     % Slope (derivative)
     figure(2);
     plot(x_plot, derivative,
-	'Color', palette{color_idx},
-  'LineWidth', 1.2);
+      'Color', palette{color_idx},
+      'LineWidth', 1.2);
 
-	% Angle
-	figure(3);
+    % Angle
+    figure(3);
     plot(x_plot, angle,
-		'Color', palette{color_idx},
-	  'LineWidth', 1.2);
+      'Color', palette{color_idx},
+      'LineWidth', 1.2);
 end
 
 % Find E with end derivative closest to 0
@@ -79,8 +73,8 @@ for k = 1:numel(E_range)
     color_idx = mod(k-1, length(palette)) + 1;
     plot([E_x], [E_range(k)], 'o',
   'LineWidth', 2,
-	'Color', palette{color_idx},
-	'MarkerSize', 3);
+  'Color', palette{color_idx},
+  'MarkerSize', 3);
 end
 
 figure(1);
@@ -101,24 +95,24 @@ legend(legend_labels, 'location', 'northeast');
 % Add two separate text objects - one above the other
 text1 = sprintf('Polynomiale avec E=%.2f:', optimal_E);
 text2 = sprintf('F(x)=%.6f+%.6fx+%.6fx^2+%.6fx^3+%.6fx^4', ...
-			    optimal_coeffs(5),
-					optimal_coeffs(4),
-					optimal_coeffs(3),
-					optimal_coeffs(2),
-					optimal_coeffs(1));
+          optimal_coeffs(5),
+          optimal_coeffs(4),
+          optimal_coeffs(3),
+          optimal_coeffs(2),
+          optimal_coeffs(1));
 
 text(0.02, 0.04, text1,
   'Units', 'normalized',
-	'VerticalAlignment', 'bottom',
+  'VerticalAlignment', 'bottom',
   'BackgroundColor', 'white',
-	'EdgeColor', 'black',
-	'FontSize', 12);
+  'EdgeColor', 'black',
+  'FontSize', 12);
 text(0.02, 0.02, text2,
   'Units', 'normalized',
-	'VerticalAlignment', 'bottom',
+  'VerticalAlignment', 'bottom',
   'BackgroundColor', 'white',
-	'EdgeColor', 'black',
-	'FontSize', 12);
+  'EdgeColor', 'black',
+  'FontSize', 12);
 save_plot(gcf, '01-trajectories');
 
 figure(2);

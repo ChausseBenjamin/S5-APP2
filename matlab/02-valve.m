@@ -45,7 +45,7 @@ residuals_linear = y_valve - y_fit_points_linear;
 RMS_linear = sqrt(mean(residuals_linear.^2));
 
 % Plot
-figure;
+figure; axis tight;
 hold on;
 grid on;
 
@@ -53,52 +53,48 @@ grid on;
 xlabel('Ouverture de la valve (%)', 'FontSize', 15);
 ylabel('Coefficient de frottement μf', 'FontSize', 15);
 
-% Data points with specified color
 plot(valve_pcnt, valve_friction, 'o',
   'LineWidth', 2,
   'Color', palette{7},
   'MarkerSize', 3);
 
-% Fitted Curve with specified color
+% Quadratic
 plot(x_fit, y_fit, '-',
   'Color', palette{2},
-	'LineWidth', 2);
+  'LineWidth', 2);
 
-% Linear approximation curve
+% Linear
 plot(x_fit, y_fit_linear, '-',
   'Color', palette{3},
-	'LineWidth', 2);
+  'LineWidth', 2);
 
-% Add legend (defaults to northeast automatically)
 legend('Données expérimentales',
   'Approximation quadratique F(x)',
-	'Approximation linéaire L(x)');
+  'Approximation linéaire L(x)');
 
-% Add function equation with Unicode symbols (units now default to normalized)
-text(0.95, 0.85, sprintf('F(x) = %.4f + %.4fx + %.4fx²', valve_coeffs(1), valve_coeffs(2), valve_coeffs(3)), ...
-    'HorizontalAlignment', 'right');
+text(0.95, 0.85,
+  sprintf('F(x) = %.4f + %.4fx + %.4fx²',
+	  valve_coeffs(1),
+		valve_coeffs(2),
+		valve_coeffs(3)), ...
+  'HorizontalAlignment', 'right');
 
 text(0.95, 0.82, sprintf('RMS = %.4f', RMS), ...
     'HorizontalAlignment', 'right');
 
-% Linear approximation equation and RMS
-text(0.95, 0.75, sprintf('L(x) = %.4f + %.4fx', valve_coeffs_linear(1), valve_coeffs_linear(2)), ...
-    'HorizontalAlignment', 'right');
+text(0.95, 0.75,
+  sprintf('L(x) = %.4f + %.4fx',
+	  valve_coeffs_linear(1),
+		valve_coeffs_linear(2)), ...
+  'HorizontalAlignment', 'right');
 
 text(0.95, 0.72, sprintf('RMS = %.4f', RMS_linear), ...
     'HorizontalAlignment', 'right');
 
-axis tight;
-
-% Save using the new save_plot function
 save_plot(gcf, '02-valve');
 
 
-
 function valve_opening = find_valve_opening(valve_coeffs, target_mu)
-    % Find valve opening percentage for a given friction coefficient
-    % Solves the quadratic equation: target_mu = a + b*x + c*x^2
-    % Rearranged to: c*x^2 + b*x + (a - target_mu) = 0
 
     a = valve_coeffs(1);
     b = valve_coeffs(2);
@@ -148,20 +144,8 @@ function [mu_min, mu_max, mu_predicted] = find_mu_range(valve_coeffs, x_opening,
     % Calculate predicted values for all experimental points
     y_predicted = valve_coeffs(1) + valve_coeffs(2)*x_valve + valve_coeffs(3)*x_valve.^2;
 
-    % Calculate residuals (difference between observed and predicted)
-    residuals = y_valve - y_predicted;
-
-    % Calculate RMS (Root Mean Square) error
     rms_error = sqrt(mean(residuals.^2));
-
-    % For uncertainty interval using 1× RMS error
-    % This gives a more typical engineering uncertainty estimate
-    confidence_multiplier = 1.0;  % 1× RMS error
-
-    uncertainty = confidence_multiplier * rms_error;
-
-    % Calculate range
-    mu_min = mu_predicted - uncertainty;
-    mu_max = mu_predicted + uncertainty;
+    mu_min = mu_predicted - rms_error;
+    mu_max = mu_predicted + rms_error;
 
 end
