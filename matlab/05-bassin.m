@@ -13,8 +13,6 @@ sizeOfTime = length(time);
 totalMass = participantMass + ballMass;
 timeIndexWaterHit = 0;
 
-% - Methodologie de l'APP
-
 % - Vitesse d'equilibre
 speedEquilibrium = sqrt((-gravity*(buoyancyConstant-1))/((hydroCoefficient)/(participantMass)));
 safeEquilibriumSpeed = speedEquilibrium * safeSpeedFactor;
@@ -23,24 +21,23 @@ safeEquilibriumSpeed = -safeEquilibriumSpeed;
 
 % - Calculs a travers la linearization
 speedWhenWaterHit = -sqrt(2*gravity*poolFallHeight);
-taylored = (speedEquilibrium^2) + 2*speedEquilibrium*(speedWhenWaterHit - speedEquilibrium);
-linearA = gravity*(buoyancyConstant-1) + (hydroCoefficient / participantMass) * taylored;
-depth = (((safeEquilibriumSpeed^2) - (speedWhenWaterHit^2))/2)/(linearA);
 
 % - Pour graphiques
 appSpeed = linspace(safeEquilibriumSpeed, speedWhenWaterHit, sizeOfTime);
-graphTaylored = (speedEquilibrium.^2) + 2 .* speedEquilibrium.*(appSpeed - speedEquilibrium);
-graphLinearA = gravity.*(buoyancyConstant-1) + (hydroCoefficient / participantMass) .* (graphTaylored);
 
-% - Magouille de signe pour le faire afficher a la bonne place
-graphDepth = -((((safeEquilibriumSpeed^2) - (appSpeed.^2))/2)./(graphLinearA));
-graphDepth = graphDepth - graphDepth(end);
+% - Calcul de la profondeur
+lambda = ((-(gravity * (buoyancyConstant - 1))) / (speedEquilibrium^2)) + (hydroCoefficient / participantMass);
+delta = safeEquilibriumSpeed - speedEquilibrium;
+depth = (1/lambda) * log(delta/(speedWhenWaterHit - speedEquilibrium))
 
-%% APP - Graphique de la vitesse en fonction du temps, lin¨¦aris¨¦.
+% - Graphique de la profondeur
+delta = appSpeed - speedEquilibrium;
+zGraph = (1/lambda) * log(delta/(speedWhenWaterHit - speedEquilibrium));
+
 figure;
 hold on;
-plot(appSpeed, graphDepth, "LineWidth", 2, "Color", palette{1});
-ylim([-9 0]);
+plot(appSpeed, zGraph, "LineWidth", 2, "Color", palette{1});
+ylim([-5 0]);
 xlim([-15 -0.5]);
 line([speedWhenWaterHit speedWhenWaterHit], ylim, 'DisplayName', 'Vitesse frappe eau', 'color', palette{2}, 'linewidth', 2, 'linestyle', '--');
 line([speedEquilibrium speedEquilibrium], ylim, 'DisplayName', 've', 'color', palette{3}, 'linewidth', 2, 'linestyle', '--');
@@ -51,6 +48,10 @@ xlabel("Vitesse (m/s)");
 title("Vitesse en fonction de la profondeur APP");
 grid on;
 legend('show', 'Location', 'best');
+hold off;
+
+
+
 
 
 
@@ -104,20 +105,20 @@ end
 ##title("Vitesse en fonction du temps");
 ##grid on;
 
-graphDepthShifted = NaN(size(graphDepth));
-shift = timeIndexWaterHit+1;
-graphDepthShifted(shift+1:end) = graphDepth(1:end-shift);
+%graphDepthShifted = NaN(size(graphDepth));
+%shift = timeIndexWaterHit+1;
+%graphDepthShifted(shift+1:end) = graphDepth(1:end-shift);
 
 %% Graphique vitesse en fonction de la position
-figure;
-hold on;
-plot(time, position, "LineWidth", 2);
-plot(time, -graphDepthShifted - 9, "LineWidth", 2);
-xlabel("Temps (s)");
-ylabel("Position (m)");
-line(xlim, [depth depth], 'DisplayName', 'profondeur', 'color', palette{5}, 'linewidth', 2, 'linestyle', '--');
-title("Position en fonction du temps");
-grid on;
+##figure;
+##hold on;
+##plot(time, position, "LineWidth", 2);
+##plot(time, -graphDepthShifted - 9, "LineWidth", 2);
+##xlabel("Temps (s)");
+##ylabel("Position (m)");
+##line(xlim, [depth depth], 'DisplayName', 'profondeur', 'color', palette{5}, 'linewidth', 2, 'linestyle', '--');
+##title("Position en fonction du temps");
+##grid on;
 
 %% Graphique vitesse en fonction de la position
 ##figure;
@@ -134,4 +135,4 @@ grid on;
 disp('')
 disp(["vitesse limite du participant dans l'eau: v_e: ", num2str(speedEquilibrium), 'm/s'])
 disp(["profondeur s¨¦curitaire du bassin d'eau: (APP)  ", num2str(depth), ' metres'])
-disp(["profondeur s¨¦curitaire simule:                 ", num2str(simulatedSafeDepth), ' metres'])
+%disp(["profondeur s¨¦curitaire simule:                 ", num2str(simulatedSafeDepth), ' metres'])
