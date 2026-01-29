@@ -1,7 +1,9 @@
-Pour la minuterie, il faut d'abord trouvé la vitesse du participant après sa collision avec le ballon, dans deux cas.
-Une collision plastique lorsqu'il est attrapé par le participant, et une collision semi-plastique lorsqu'il n'est pas attrapé.
-Hors, les équations du coefficients de restitution et de l'énergie total du systèmes restent les mêmes pour les deux cas. Les voici, en fonction
-du participant (p) et ballon (b)
+Pour la minuterie, il faut d'abord trouvé la vitesse du participant après sa
+collision avec le ballon, dans deux cas. Une collision plastique lorsqu'il est
+attrapé par le participant, et une collision semi-plastique lorsqu'il n'est pas
+attrapé. Hors, les équations du coefficients de restitution et de l'énergie
+total du systèmes restent les mêmes pour les deux cas. Les voici, en fonction du
+participant (p) et ballon (b)
 
 \begin{align}
 	e&=\frac{V_{pf}-V_{bf}}{V_{bi}-{V_{pi}}}\\
@@ -9,11 +11,13 @@ du participant (p) et ballon (b)
 \end{align}
 
 \subsection{Cas ou le ballon est attrapé}
-Dans ce cas-ci, la collision est plastique. Donc le coefficient de restitution est 0.
+Dans ce cas-ci, la collision est plastique. Donc le coefficient de restitution
+est 0.
 \begin{equation}
 0=\frac{V_{pf}-V_{bf}}{V_{bi}-{V_{pi}}}
 \end{equation}
-Vue que la collision est plastique, le participant et le ballon sont obligé d'avoir la même vitesse final. Le participant a attrapé le ballon après tout.
+Vue que la collision est plastique, le participant et le ballon sont obligé
+d'avoir la même vitesse final. Le participant a attrapé le ballon après tout.
 Donc avec l'équation de l'énergie posé au début de cette section;
 \begin{align}
 	m_pV_{pi}+m_bV_{bi}&=m_pV_{f}+m_bV_{f}\\
@@ -31,11 +35,11 @@ plus le participant pert de la vitesse. Il n'est pas possible de simplifier
 les vitesses comme dans le cas précédent. Hors, la démarche est identique,
 mais la formule obtenue est plus lourde:
 \begin{align}
-m_pV_{pi}+m_bV_{bi}&=m_pV_{pf}+m_bV_{bf} \\
-m_pV_{pi}+m_bV_{bi}&=m_pV_{pf}+m_b\cdot(-e(V_{bi}-V_{pi})+V_{pf}) \\
-m_pV_{pi}+m_bV_{bi}&=m_pV_{pf}-m_be(V_{bi}-V_{pi})+m_bV_{pf} \\
-m_pV_{pi}+m_bV_{bi}+m_be(V_{bi}-V_{pi})&=m_pV_{pf}+m_bV_{pf} \\
-m_pV_{pi}+m_b(V_{bi}+e(V_{bi}-V_{pi}))&=V_{pf}(m_p+m_b) \\
+m_p V_{pi}+m_b V_{bi}&=m_p V_{pf}+m_b V_{bf} \\
+m_p V_{pi}+m_b V_{bi}&=m_p V_{pf}+m_b \cdot(-e(V_{bi}-V_{pi})+V_{pf}) \\
+m_p V_{pi}+m_b V_{bi}&=m_p V_{pf}-m_b e(V_{bi}-V_{pi})+m_bV_{pf} \\
+m_p V_{pi}+m_b V_{bi}+m_be(V_{bi}-V_{pi})&=m_pV_{pf}+m_bV_{pf} \\
+m_p V_{pi}+m_b(V_{bi}+e(V_{bi}-V_{pi}))&=V_{pf}(m_p+m_b) \\
 \frac{m_pV_{pi}+m_b(V_{bi}+e(V_{bi}-V_{pi}))}{m_p+m_b}&=V_{pf}
 \end{align}
 Hors, avec la vitesse initial du participant restand la même que le cas
